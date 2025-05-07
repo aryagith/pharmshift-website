@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Essential Next.js / React settings */
+    "target": "esnext", // Target latest ECMAScript features
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true, // Can be set to false for stricter debugging, but slows things down
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,       // Next.js handles emission
+    "esModuleInterop": true,
+    "module": "esnext",   // Use ES modules
+    "moduleResolution": "bundler", // Modern module resolution strategy
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",    // Next.js handles JSX transformation
+    "incremental": true,
+
+    /* Next.js plugin */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+
+    /* Optional: If you use path aliases like @/* */
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["./src/*"] // Adjust if your src folder is different or not used
+    // }
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts", // For Next.js 13 App Router type support
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
