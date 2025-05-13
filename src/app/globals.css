@@ -1,3 +1,4 @@
+/* globals.css */
 @import "tailwindcss";
 
 :root {
@@ -14,6 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Your dark mode background for the page will be #0a0a0a */
     --background: #0a0a0a;
     --foreground: #ededed;
   }
@@ -22,7 +24,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; /* Note: MUI theme sets Roboto Flex, ensure this isn't overriding unintentionally elsewhere */
+  min-height: 100vh; /* Good for ensuring background covers viewport */
 }
 
 @keyframes pillFadeIn {
@@ -36,3 +39,17 @@ body {
   }
 }
 
+/*
+  REMOVE or COMMENT OUT this section.
+  The styles are now handled by your MUI theme in `lib/theme.ts`.
+  Keeping this can lead to specificity issues or !important wars.
+*/
+/*
+.MuiPopover-root .MuiMenu-paper {
+  background-color: #0a0a0a !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65) !important;
+  color: #fff !important;
+}
+*/

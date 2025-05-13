@@ -54,10 +54,10 @@ export default function Navbar() {
               alignItems: 'center',
             }}
           >
-            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300 }}>
+            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
               Home
             </Button>
-            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300 }}>
+            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
               About us
             </Button>
 
@@ -65,7 +65,7 @@ export default function Navbar() {
             <Box>
               <Button
                 color="inherit"
-                sx={{ fontSize: '1.125rem', fontWeight: 300 }}
+                sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}
                 onClick={(e) =>
                   setResourcesAnchor(resourcesAnchor ? null : e.currentTarget)
                 }
@@ -77,20 +77,21 @@ export default function Navbar() {
                 anchorEl={resourcesAnchor}
                 open={openResources}
                 onClose={() => setResourcesAnchor(null)}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      borderRadius: 2,
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.5)',
-                      color: '#fff',
-                      overflow: 'hidden',
-                    },
-                  },
-                }}
+                // slotProps={{
+                //   paper: {
+                //     sx: {
+                //       // backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                //       // backdropFilter: 'blur(16px)',
+                //       // WebkitBackdropFilter: 'blur(16px)',
+                //       // border: '1px solid rgba(255, 255, 255, 0.15)',
+                //       // borderRadius: '12px',
+                //       // boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
+                //       // color: '#fff',
+                //       // overflow: 'hidden',
+                //     },
+                //   },
+                // }}
+                
               >
                 {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
                   <MenuItem key={item}>{item}</MenuItem>
@@ -106,7 +107,7 @@ export default function Navbar() {
                 variant="outlined"
                 onClick={() => router.push('/auth/signin')}
                 sx={{
-                  borderRadius: '999px',
+                  borderRadius: 2,
                   fontSize: '1.125rem',
                   fontWeight: 300,
                 }}
@@ -126,20 +127,21 @@ export default function Navbar() {
                   anchorEl={accountAnchor}
                   open={openAccount}
                   onClose={() => setAccountAnchor(null)}
-                  slotProps={{
-                    paper: {
-                      sx: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        backdropFilter: 'blur(10px)',
-                        WebkitBackdropFilter: 'blur(10px)',
-                        borderRadius: 2,
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.5)',
-                        color: '#fff',
-                        overflow: 'hidden',
-                      },
-                    },
-                  }}
+                  // slotProps={{
+                  //   paper: {
+                  //     sx: {
+                  //       backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                  //       backdropFilter: 'blur(16px)',
+                  //       WebkitBackdropFilter: 'blur(16px)',
+                  //       border: '1px solid rgba(255, 255, 255, 0.15)',
+                  //       borderRadius: '12px',
+                  //       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
+                  //       color: '#fff',
+                  //       overflow: 'hidden',
+                  //     },
+                  //   },
+                  // }}
+                  
                 >
                   <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
                   <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>Sign out</MenuItem>
