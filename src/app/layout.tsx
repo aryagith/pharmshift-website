@@ -1,12 +1,8 @@
-'use client';
+import './globals.css'; // ← Global styles with tailwind + keyframes
+import Providers from './providers'; // ← Client component for session/theme
+import { Roboto_Flex } from 'next/font/google';
 
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from '../lib/theme';
-import { Noto_Sans_Georgian, Roboto, Roboto_Flex } from 'next/font/google';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+// Google Font setup
 const robotoFlex = Roboto_Flex({
   subsets: ['latin'],
   display: 'swap',
@@ -14,48 +10,36 @@ const robotoFlex = Roboto_Flex({
   weight: ['300', '400', '500', '700'],
 });
 
+// Optional metadata (customize as needed)
+export const metadata = {
+  title: 'PharmShift',
+  description: 'Your pharmacy resource hub',
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={robotoFlex.className}>
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-
-          {/* Floating pill background with fade-in */}
+        <Providers>
+          {/* Floating pill animation background */}
           <div
-          style={{
-            position: 'fixed',
-            top: '25%',
-            right: '3vw',
-            width: '520px',
-            zIndex: 0,
-            opacity: 0.70,
-            animation: 'pillFadeIn 1.5s ease-out forwards',
-            pointerEvents: 'none',
-          }}
-        >
-          <img src="/pill.png" alt="pill" style={{ width: '100%', height: 'auto' }} />
-        </div>
-
-          {/* Content on top of pill */}
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            {children}
+            style={{
+              position: 'fixed',
+              top: '25%',
+              right: '3vw',
+              width: '520px',
+              zIndex: 0,
+              opacity: 0.7,
+              animation: 'pillFadeIn 1.5s ease-out forwards',
+              pointerEvents: 'none',
+            }}
+          >
+            <img src="/pill.png" alt="pill" style={{ width: '100%', height: 'auto' }} />
           </div>
 
-          {/* CSS animation keyframes */}
-          <style jsx global>{`
-            @keyframes pillFadeIn {
-              from {
-                opacity: 0;
-                transform: translateY(30px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style>
-        </ThemeProvider>
+          {/* Content above background */}
+          <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
+        </Providers>
       </body>
     </html>
   );

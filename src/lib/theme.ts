@@ -21,7 +21,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '999px',
-          textTransform: 'none', 
+          textTransform: 'none',
         },
         containedPrimary: {
           backgroundColor: '#1B4CD7',
@@ -34,9 +34,12 @@ const theme = createTheme({
     MuiMenu: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#000', // fully black background
-          borderRadius: 12,        // curved corners
-          boxShadow: '0 4px 12px rgba(0,0,0,0.6)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: 12,
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.5)',
           padding: '4px 0',
         },
       },
@@ -68,7 +71,7 @@ const theme = createTheme({
       lineHeight: 1.6,
     },
   }
-  
-  });
+
+});
 
 export default theme;

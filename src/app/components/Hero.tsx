@@ -15,7 +15,7 @@ export default function Hero() {
     >
       <Container>
         <Grid container justifyContent="flex-start" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid item xs={12} sm={10} md={6}>
+          <Grid xs={12} sm={10} md={6}>
             <Box sx={{ maxWidth: 570 }}>
               <Typography
                 variant="h1"
@@ -48,8 +48,8 @@ export default function Hero() {
                 size="large"
                 sx={{
                   borderRadius: '999px',
-                  fontWeight: 400,
-                  fontSize: '1rem',
+                  fontWeight: 375,
+                  fontSize: '1.5rem',
                   px: 5,
                   py: 1.75,
                 }}

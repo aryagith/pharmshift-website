@@ -1,4 +1,5 @@
 'use client';
+
 import {
   AppBar,
   Toolbar,
@@ -8,22 +9,41 @@ import {
   MenuItem,
   Box,
   Container,
+  Avatar,
+  IconButton,
 } from '@mui/material';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [resourcesAnchor, setResourcesAnchor] = useState<null | HTMLElement>(null);
+  const [accountAnchor, setAccountAnchor] = useState<null | HTMLElement>(null);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const openResources = Boolean(resourcesAnchor);
+  const openAccount = Boolean(accountAnchor);
 
   return (
-    <AppBar position="sticky" color="transparent" elevation={0}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+      }}
+    >
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Toolbar disableGutters sx={{ minHeight: 80 }}>
-          {/* Logo - LEFT (unaltered) */}
-          <Typography variant="h4" sx={{ fontWeight: 350 }}>
+          {/* Logo - LEFT */}
+          <Typography variant="h4" sx={{ fontWeight: 450 }}>
             PharmShift
           </Typography>
 
-          {/* Nav Links - CENTERED ABSOLUTELY */}
+          {/* Nav Links - CENTERED */}
           <Box
             sx={{
               position: 'absolute',
@@ -41,79 +61,92 @@ export default function Navbar() {
               About us
             </Button>
 
-            {/* Resources with hoverable dropdown */}
-            <Box
-              onMouseEnter={(e) => setAnchorEl(e.currentTarget)}
-              onMouseLeave={() => setAnchorEl(null)}
-            >
+            {/* Resources Dropdown (Click-based) */}
+            <Box>
               <Button
                 color="inherit"
                 sx={{ fontSize: '1.125rem', fontWeight: 300 }}
+                onClick={(e) =>
+                  setResourcesAnchor(resourcesAnchor ? null : e.currentTarget)
+                }
               >
                 Resources
               </Button>
 
               <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                MenuListProps={{
-                  onMouseEnter: () => setAnchorEl(anchorEl),
-                  onMouseLeave: () => setAnchorEl(null),
-                  disablePadding: true,
-                  sx: {
-                    backgroundColor: '#000',
-                  },
-                }}
-                PaperProps={{
-                  sx: {
-                    backgroundColor: '#000', // Jet black
-                    borderRadius: '12px',    // Fully rounded corners
-                    boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.5)',
-                    mt: 1,
-                    overflow: 'hidden',
+                anchorEl={resourcesAnchor}
+                open={openResources}
+                onClose={() => setResourcesAnchor(null)}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      borderRadius: 2,
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.5)',
+                      color: '#fff',
+                      overflow: 'hidden',
+                    },
                   },
                 }}
               >
-                {['Quizzes', 'Chatbot', 'OSCE Studybot', 'Review'].map((item) => (
-                  <MenuItem
-                    key={item}
-                    sx={{
-                      color: '#fff',
-                      fontSize: '1rem',
-                      fontWeight: 300,
-                      px: 2.5,
-                      py: 1.25,
-                      '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.08)',
-                      },
-                    }}
-                  >
-                    {item}
-                  </MenuItem>
+                {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
+                  <MenuItem key={item}>{item}</MenuItem>
                 ))}
               </Menu>
-
-
             </Box>
           </Box>
 
-
-          {/* Login */}
+          {/* Right Side - Login or Avatar */}
           <Box sx={{ position: 'absolute', right: 0 }}>
-            <Button
-              variant="outlined"
-              sx={{
-                borderRadius: '999px',
-                fontSize: '1.125rem',
-                fontWeight: 300,
-              }}
-            >
-              Login
-            </Button>
+            {!session ? (
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/auth/signin')}
+                sx={{
+                  borderRadius: '999px',
+                  fontSize: '1.125rem',
+                  fontWeight: 300,
+                }}
+              >
+                Login
+              </Button>
+            ) : (
+              <>
+                <IconButton onClick={(e) => setAccountAnchor(e.currentTarget)} sx={{ p: 0 }}>
+                  <Avatar
+                    src={session.user?.image || '/default-avatar.png'}
+                    alt={session.user?.name || 'User'}
+                  />
+                </IconButton>
+
+                <Menu
+                  anchorEl={accountAnchor}
+                  open={openAccount}
+                  onClose={() => setAccountAnchor(null)}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        backdropFilter: 'blur(10px)',
+                        WebkitBackdropFilter: 'blur(10px)',
+                        borderRadius: 2,
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.5)',
+                        color: '#fff',
+                        overflow: 'hidden',
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
+                  <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>Sign out</MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
-
-
         </Toolbar>
       </Container>
     </AppBar>
