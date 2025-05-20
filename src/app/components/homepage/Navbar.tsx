@@ -1,5 +1,6 @@
 'use client';
 
+import { AccountCircle, Logout } from '@mui/icons-material';
 import {
   AppBar,
   Toolbar,
@@ -25,6 +26,14 @@ export default function Navbar() {
   const openResources = Boolean(resourcesAnchor);
   const openAccount = Boolean(accountAnchor);
 
+  const handleClick = (item: string) => {
+    if (item === 'Quizzes') {
+      router.push('/quizselection');
+    }
+    // Add handling for other items if needed
+  };
+
+
   return (
     <AppBar
       position="sticky"
@@ -39,9 +48,17 @@ export default function Navbar() {
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Toolbar disableGutters sx={{ minHeight: 80 }}>
           {/* Logo - LEFT */}
+          <Button disableRipple onClick = {() => router.push('/')} sx={
+            { display: 'flex', 
+              alignItems: 'center',
+              borderRadius: 2,
+              color: 'white',
+             }
+            }>
           <Typography variant="h4" sx={{ fontWeight: 450 }}>
-            PharmShift
+            PharmShift 
           </Typography>
+          </Button>
 
           {/* Nav Links - CENTERED */}
           <Box
@@ -61,7 +78,7 @@ export default function Navbar() {
               About us
             </Button>
 
-            {/* Resources Dropdown (Click-based) */}
+            {/* Resources Dropdown*/}
             <Box>
               <Button
                 color="inherit"
@@ -94,7 +111,7 @@ export default function Navbar() {
                 
               >
                 {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
-                  <MenuItem key={item}>{item}</MenuItem>
+                  <MenuItem key={item} onClick={() => {handleClick(item)}}>{item}</MenuItem>
                 ))}
               </Menu>
             </Box>
@@ -127,6 +144,13 @@ export default function Navbar() {
                   anchorEl={accountAnchor}
                   open={openAccount}
                   onClose={() => setAccountAnchor(null)}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        mt: 1.25, // adjust this value to move the menu down (10px ≈ 1.25 theme spacing)
+                      },
+                    },
+                  }}
                   // slotProps={{
                   //   paper: {
                   //     sx: {
@@ -143,8 +167,23 @@ export default function Navbar() {
                   // }}
                   
                 >
-                  <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
-                  <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>Sign out</MenuItem>
+                    <MenuItem onClick={() => router.push('/profile')}>
+                    <AccountCircle sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={(event) => {
+                        event.preventDefault();
+                        signOut().catch(console.error);
+                      }}
+                    >
+                    <Logout sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    Sign out
+                    </MenuItem>
+                  {/* <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+                  <Logout sx={{alignItems }} />
+                  Sign out
+                  </MenuItem> */}
                 </Menu>
               </>
             )}
@@ -154,3 +193,4 @@ export default function Navbar() {
     </AppBar>
   );
 }
+

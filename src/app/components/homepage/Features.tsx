@@ -18,7 +18,7 @@ export default function Features() {
       <Typography variant="h4" textAlign="center" gutterBottom>
         What is PharmShift?
       </Typography>
-      <Grid container spacing={4} columns={{ xs: 12, sm: 12, md: 12 }}>
+      <Grid container marginTop={10} spacing={4} columns={{ xs: 12, sm: 12, md: 12 }}>
         {features.map(({ label, icon }) => (
           <Grid key={label} item size={{ xs: 6, sm: 3 }}>
             <Box textAlign="center">

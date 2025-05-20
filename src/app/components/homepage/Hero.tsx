@@ -1,22 +1,24 @@
 'use client';
 
 import { Box, Typography, Button, Container, Grid } from '@mui/material';
+import { on } from 'events';
+import { useRouter } from 'next/navigation';
 
 export default function Hero() {
+  const router = useRouter();
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: 'calc(100vh - 64px)', // Or remove entirely if you want natural height
         display: 'flex',
         alignItems: 'center',
-        position: 'relative',
-        pt: { xs: 10, md: 0 },
+        pt: 0,
       }}
     >
       <Container>
         <Grid container justifyContent="flex-start" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid xs={12} sm={10} md={6}>
-            <Box sx={{ maxWidth: 570 }}>
+            <Box sx={{ maxWidth: 600 }}>
               <Typography
                 variant="h1"
                 gutterBottom
@@ -53,6 +55,7 @@ export default function Hero() {
                   px: 5,
                   py: 1.75,
                 }}
+                onClick={() => { router.push('/quizselection') }}
               >
                 Start Quiz
               </Button>

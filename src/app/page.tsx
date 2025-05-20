@@ -1,15 +1,14 @@
 // app/page.tsx
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import Testimonials from './components/Testimonials';
-import Footer from './components/Footer';
-import SubmittedRatings from './components/SubmittedRatings';
+import Navbar from './components/homepage/Navbar';
+import Hero from './components/homepage/Hero';
+import Features from './components/homepage/Features';
+import Testimonials from './components/homepage/Testimonials';
+import Footer from './components/homepage/Footer';
+import SubmittedRatings from './components/homepage/SubmittedRatings';
 
 export default function HomePage() {
   return (
     <>
-      <Navbar />
       <Hero />
       <SubmittedRatings />
       <Features />
