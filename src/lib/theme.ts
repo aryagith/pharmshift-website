@@ -14,11 +14,11 @@ const theme = createTheme({
     },
     background: {
       default: '#000000',
-      paper: '#121212',
+      paper: '#000000',
     },
     text: {
       primary: '#ffffff',
-      secondary: '#aaaaaa',
+      secondary: '#b0b0b0',
     },
   },
   components: {
@@ -34,13 +34,13 @@ const theme = createTheme({
           textTransform: 'none',
           transition: 'background-color 0.2s ease, box-shadow 0.2s ease',
           '&:hover': {
-            backgroundColor: alpha('#ffffff', 0.05),
-          },
-          '&:active': {
             backgroundColor: alpha('#ffffff', 0.08),
           },
+          '&:active': {
+            backgroundColor: alpha('#ffffff', 0.06),
+          },
           '&:focus-visible': {
-            outline: `2px solid ${alpha('#ffffff', 0.2)}`,
+            outline: `2px solid ${alpha('#ffffff', 0.18)}`,
             outlineOffset: 2,
           },
         },
@@ -57,40 +57,51 @@ const theme = createTheme({
     },
     MuiMenu: {
       styleOverrides: {
-        paper: ({ theme }) => ({
-          backgroundColor: 'rgb(0, 0, 0)',
-          color: theme.palette.text.primary,
-          borderRadius: 12,
-          border: '',
-          boxShadow: 'none',
-        }),
+        paper: {
+          background: 'rgba(10, 10, 10, 0.55)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          borderRadius: '14px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
+          color: '#fff',
+          overflow: 'hidden',
+          transition: 'background 0.3s',
+          minWidth: 180,
+          padding: 0,
+        },
       },
     },
     MuiMenuItem: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.text.primary,
+        root: {
+          color: '#fff',
           fontSize: '1rem',
-          fontWeight: 400,
-          padding: '10px 20px',
+          fontWeight: 400, // Changed from 500 to 400
+          borderRadius: 8,
+          margin: '2px 6px',
+          padding: '8px 18px',
+          transition: 'background 0.15s',
+          background: 'transparent',
+          minHeight: 36,
           '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.06),
+            backgroundColor: 'rgba(27,76,215,0.10)',
+            backdropFilter: 'blur(8px) saturate(180%)',
           },
           '&.Mui-selected': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.15),
+            backgroundColor: 'rgba(27,76,215,0.18)',
             '&:hover': {
-              backgroundColor: alpha(theme.palette.primary.main, 0.25),
+              backgroundColor: 'rgba(27,76,215,0.28)',
             },
           },
           '&.Mui-focusVisible': {
-            backgroundColor: alpha(theme.palette.common.white, 0.08),
+            backgroundColor: 'rgba(27,76,215,0.15)',
           },
-        }),
+        },
       },
     },
   },
 
-  // ✅ Typography using Poppins
   typography: {
     fontFamily: '"Poppins", sans-serif',
     h2: {

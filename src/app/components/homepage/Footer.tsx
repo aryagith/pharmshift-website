@@ -40,7 +40,7 @@ export default function Footer() {
 
 
       {/* Bottom Section */}
-      <Box sx={{ borderTop: '1px solid #333', py: 3 }}>
+      <Box sx={{py: 1 }}>
         <Container>
           <Stack
             direction="row"

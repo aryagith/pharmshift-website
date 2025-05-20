@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
   Divider,
+  Alert,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +20,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [formError, setFormError] = useState(false);
 
   useEffect(() => {
     if (errorParam === 'Use Google login') {
@@ -26,8 +28,19 @@ export default function SignInPage() {
     }
   }, [errorParam]);
 
-  const handleLogin = async (e: any) => {
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setAuthError('');
+    setFormError(false);
+
+    if (!email || !password || !isValidEmail(email)) {
+      setFormError(true);
+      return;
+    }
+
     const res = await signIn('credentials', {
       email,
       password,
@@ -44,12 +57,18 @@ export default function SignInPage() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100vh',
+        overflow: 'auto',
         backgroundColor: '#000',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        p: 3,
+        p: 2,
+        zIndex: 1000,
       }}
     >
       <Box
@@ -59,6 +78,8 @@ export default function SignInPage() {
           padding: 4,
           width: '100%',
           maxWidth: 400,
+          maxHeight: '90vh',
+          overflowY: 'auto',
           boxShadow: '0 0 20px rgba(0,0,0,0.5)',
         }}
       >
@@ -95,7 +116,6 @@ export default function SignInPage() {
 
         <Divider sx={{ my: 2, borderColor: '#333' }}>or</Divider>
 
-        {/* Login Form */}
         <form onSubmit={handleLogin}>
           <TextField
             placeholder="Email"
@@ -103,7 +123,15 @@ export default function SignInPage() {
             variant="filled"
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            error={formError && (!email || !isValidEmail(email))}
+            helperText={
+              formError && !email
+                ? 'Email is required'
+                : formError && !isValidEmail(email)
+                ? 'Enter a valid email'
+                : ''
+            }
             sx={{
               mb: 2,
               input: { color: '#fff' },
@@ -111,13 +139,16 @@ export default function SignInPage() {
               borderRadius: 1,
             }}
           />
+
           <TextField
             placeholder="Password"
             type="password"
             variant="filled"
             fullWidth
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            error={formError && !password}
+            helperText={formError && !password ? 'Password is required' : ''}
             sx={{
               mb: 3,
               input: { color: '#fff' },
@@ -127,9 +158,9 @@ export default function SignInPage() {
           />
 
           {authError && (
-            <Typography color="error" sx={{ mb: 2, textAlign: 'center' }}>
+            <Alert severity="error" sx={{ mb: 2, borderRadius: 1 }}>
               {authError}
-            </Typography>
+            </Alert>
           )}
 
           <Button

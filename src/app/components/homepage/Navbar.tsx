@@ -30,7 +30,9 @@ export default function Navbar() {
     if (item === 'Quizzes') {
       router.push('/quizselection');
     }
-    // Add handling for other items if needed
+    if (item === "Home") {
+      router.push('/'); 
+    }
   };
 
 
@@ -48,14 +50,21 @@ export default function Navbar() {
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Toolbar disableGutters sx={{ minHeight: 80 }}>
           {/* Logo - LEFT */}
-          <Button disableRipple onClick = {() => router.push('/')} sx={
-            { display: 'flex', 
+            <Button
+            disableRipple
+            onClick={() => router.push('/')}
+            sx={{
+              display: 'flex',
               alignItems: 'center',
               borderRadius: 2,
               color: 'white',
-             }
-            }>
-          <Typography variant="h4" sx={{ fontWeight: 450 }}>
+              backgroundColor: 'transparent',
+              '&:hover': {
+              backgroundColor: 'transparent',
+              },
+            }}
+            >
+          <Typography variant="h4" sx={{ fontWeight: 450 }} >
             PharmShift 
           </Typography>
           </Button>
@@ -71,7 +80,7 @@ export default function Navbar() {
               alignItems: 'center',
             }}
           >
-            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
+            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }} onClick={(e) => {router.push('/')}}>
               Home
             </Button>
             <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
@@ -90,30 +99,31 @@ export default function Navbar() {
                 Resources
               </Button>
 
-              <Menu
-                anchorEl={resourcesAnchor}
-                open={openResources}
-                onClose={() => setResourcesAnchor(null)}
-                // slotProps={{
-                //   paper: {
-                //     sx: {
-                //       // backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                //       // backdropFilter: 'blur(16px)',
-                //       // WebkitBackdropFilter: 'blur(16px)',
-                //       // border: '1px solid rgba(255, 255, 255, 0.15)',
-                //       // borderRadius: '12px',
-                //       // boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
-                //       // color: '#fff',
-                //       // overflow: 'hidden',
-                //     },
-                //   },
-                // }}
-                
-              >
-                {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
-                  <MenuItem key={item} onClick={() => {handleClick(item)}}>{item}</MenuItem>
-                ))}
-              </Menu>
+                <Menu
+                  anchorEl={resourcesAnchor}
+                  open={openResources}
+                  onClose={() => setResourcesAnchor(null)}
+                  // slotProps={{
+                  //   paper: {
+                  //     sx: (theme) => ({
+                  //       background: 'rgba(10, 10, 10, 0.55)',
+                  //       backdropFilter: 'blur(24px) saturate(180%)',
+                  //       WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+                  //       border: '1px solid rgba(255,255,255,0.10)',
+                  //       borderRadius: '14px',
+                  //       boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
+                  //       color: '#fff',
+                  //       overflow: 'hidden',
+                  //       transition: 'background 0.3s',
+                  //     }),
+                    // },
+                  // }
+                // }
+                >
+                  {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
+                    <MenuItem key={item} onClick={() => {handleClick(item)}}>{item}</MenuItem>
+                  ))}
+                </Menu>
             </Box>
           </Box>
 
@@ -129,7 +139,7 @@ export default function Navbar() {
                   fontWeight: 300,
                 }}
               >
-                Login
+                Login/Sign-Up
               </Button>
             ) : (
               <>

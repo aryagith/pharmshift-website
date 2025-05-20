@@ -71,15 +71,18 @@ const QuizSelectionPage = () => {
                             sx={{
                                 width: 200,
                                 height: 200,
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                backdropFilter: 'blur(8px)',
-                                WebkitBackdropFilter: 'blur(8px)',
+                                background: 'rgba(18, 18, 18, 0.85)', // jet black glass
+                                boxShadow: '0 8px 32px 0 rgba(0,0,0,0.37)',
+                                backdropFilter: 'blur(16px) saturate(180%)',
+                                WebkitBackdropFilter: 'blur(16px) saturate(180%)',
                                 borderRadius: 3,
+                                border: '1px solid rgba(255,255,255,0.08)',
                                 color: 'white',
-                                transition: 'transform 0.2s ease, background-color 0.2s ease',
+                                transition: 'transform 0.2s, background 0.2s, box-shadow 0.2s',
                                 '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                    transform: 'scale(1.03)',
+                                    background: 'rgba(30, 30, 30, 0.92)',
+                                    boxShadow: '0 12px 40px 0 rgba(0,0,0,0.45)',
+                                    transform: 'scale(1.04)',
                                 },
                             }}
                         >
@@ -89,20 +92,17 @@ const QuizSelectionPage = () => {
                                     height: '100%',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    justifyContent: 'space-between', // Space between icon and label
+                                    justifyContent: 'space-between',
                                     alignItems: 'center',
                                     px: 2,
                                     py: 2,
                                 }}
                             >
-                                {/* Enlarged Icon */}
                                 <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
                                     {React.cloneElement(quiz.icon, {
                                         sx: { fontSize: 100, color: 'primary.main' },
                                     })}
                                 </Box>
-
-                                {/* Label closer to bottom */}
                                 <Typography
                                     variant="subtitle1"
                                     fontWeight={425}
@@ -123,9 +123,13 @@ const QuizSelectionPage = () => {
                 slotProps={{
                     paper: {
                         sx: {
-                            backgroundColor: '#000',
+                            background: 'rgba(18, 18, 18, 0.95)',
+                            boxShadow: '0 8px 32px 0 rgba(0,0,0,0.37)',
+                            backdropFilter: 'blur(16px) saturate(180%)',
+                            WebkitBackdropFilter: 'blur(16px) saturate(180%)',
                             color: 'white',
                             borderRadius: 2,
+                            border: '1px solid rgba(255,255,255,0.08)',
                             p: 3,
                             textAlign: 'center',
                         },

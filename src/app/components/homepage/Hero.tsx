@@ -45,20 +45,31 @@ export default function Hero() {
                 for pharmacy students
               </Typography>
 
-              <Button
-                variant="contained"
-                size="large"
-                sx={{
+                <Button
+                  variant="contained"
+                  size="large"
+                  sx={{
                   borderRadius: '999px',
                   fontWeight: 375,
                   fontSize: '1.5rem',
                   px: 5,
                   py: 1.75,
-                }}
-                onClick={() => { router.push('/quizselection') }}
-              >
-                Start Quiz
-              </Button>
+                  background: 'linear-gradient(90deg, rgba(28,76,216,0.85) 0%, rgba(44,120,255,0.75) 100%)',
+                  color: '#fff',
+                  boxShadow: '0 4px 30px rgba(28, 76, 216, 0.15)',
+                  backdropFilter: 'blur(8px) saturate(120%)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  transition: 'background 0.2s, box-shadow 0.2s',
+                  opacity: 0.97,
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, rgba(22,60,168,0.95) 0%, rgba(44,120,255,0.85) 100%)',
+                    boxShadow: '0 6px 40px rgba(28, 76, 216, 0.22)',
+                  },
+                  }}
+                  onClick={() => { router.push('/quizselection') }}
+                >
+                  Start Quiz
+                </Button>
             </Box>
           </Grid>
         </Grid>
