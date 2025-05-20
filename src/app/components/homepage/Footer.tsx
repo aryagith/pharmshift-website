@@ -54,14 +54,14 @@ export default function Footer() {
             </Typography>
 
             <Stack direction="row" spacing={1}>
-              <IconButton
-                href="https://instagram.com"
+                <IconButton
+                href="https://instagram.com/pharmshift"
                 target="_blank"
                 rel="noopener"
                 sx={{ color: '#fff' }}
-              >
+                >
                 <InstagramIcon />
-              </IconButton>
+                </IconButton>
               <IconButton
                 href="https://twitter.com"
                 target="_blank"
