@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+quiz-data.js
+prisma/migrations/migration_lock.toml
+prisma/migrations/20250527172730_add_quiz_timelimit/migration.sql
+prisma/migrations/20250527174339_allow_long_question_text/migration.sql

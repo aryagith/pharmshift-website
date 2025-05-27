@@ -21,17 +21,17 @@ import React from 'react';
 const quizzes = [
     {
         name: 'Quiz 1',
-        route: '/quiz/1',
+        route: '/quizzes/cmb6w1ela0000d7yocnnjdhgs',
         icon: <PsychologyAltOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
     },
     {
         name: 'Quiz 2',
-        route: '/quiz/2',
+        route: '/quizzes/cmb6w1fi9002kd7yoo64hddxs',
         icon: <MedicalServicesOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
     },
     {
         name: 'Quiz 3',
-        route: '/quiz/3',
+        route: '/quizzes/cmb6w1gkn0061d7yorzabgtj9',
         icon: <ScienceOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
     },
 ];
@@ -57,6 +57,7 @@ const QuizSelectionPage = () => {
         }
         handleClose();
     };
+
 
     return (
         <Box sx={{ textAlign: 'center', py: 6 }}>

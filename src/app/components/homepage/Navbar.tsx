@@ -84,7 +84,7 @@ export default function Navbar() {
               Home
             </Button>
             <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
-              About us
+              Review
             </Button>
 
             {/* Resources Dropdown*/}
