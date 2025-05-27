@@ -22,6 +22,15 @@ const theme = createTheme({
     },
   },
   components: {
+    // MuiBackdrop: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: 'rgba(0, 0, 0, 0.25)', // dark overlay
+    //       backdropFilter: 'blur(24px) saturate(180%)',
+    //       WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+    //     },
+    //   },
+    // },
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
@@ -60,14 +69,14 @@ const theme = createTheme({
         paper: {
           background: 'rgba(10, 10, 10, 0.55)',
           backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)', //Add to menu locally for glassy effect
           border: '1px solid rgba(255,255,255,0.10)',
           borderRadius: '14px',
           boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
           color: '#fff',
           overflow: 'hidden',
           transition: 'background 0.3s',
-          minWidth: 180,
+          width: 'fit-content',
           padding: 0,
         },
       },
@@ -77,7 +86,7 @@ const theme = createTheme({
         root: {
           color: '#fff',
           fontSize: '1rem',
-          fontWeight: 400, // Changed from 500 to 400
+          fontWeight: 400,
           borderRadius: 8,
           margin: '2px 6px',
           padding: '8px 18px',
@@ -100,7 +109,25 @@ const theme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          background: 'rgba(10, 10, 10, 0.55)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          borderRadius: '14px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
+          color: '#fff',
+          overflow: 'hidden',
+          transition: 'background 0.3s',
+          width: 'fit-content',
+          padding: 0,
+        },
+      },
+    },
   },
+
 
   typography: {
     fontFamily: '"Poppins", sans-serif',

@@ -120,54 +120,103 @@ const QuizSelectionPage = () => {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                slotProps={{
-                    paper: {
-                        sx: {
-                            background: 'rgba(18, 18, 18, 0.95)',
-                            boxShadow: '0 8px 32px 0 rgba(0,0,0,0.37)',
-                            backdropFilter: 'blur(16px) saturate(180%)',
-                            WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                            color: 'white',
-                            borderRadius: 2,
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            p: 3,
-                            textAlign: 'center',
-                        },
-                    },
-                }}
             >
-                <DialogTitle sx={{ fontSize: '1.25rem', fontWeight: 600 }}>
-                    Are you sure you want to start the quiz?
-                </DialogTitle>
-                <DialogActions sx={{ justifyContent: 'center', mt: 2 }}>
-                    <Button
-                        onClick={handleClose}
-                        variant="contained"
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 4,
+                    }}
+                >
+                    <Box sx={{ mb: 2 }}>
+                        {selectedQuizIndex !== null &&
+                            React.cloneElement(quizzes[selectedQuizIndex].icon, {
+                                sx: { fontSize: 70, color: '#1C3EB5' },
+                            })}
+                    </Box>
+                    <DialogTitle
                         sx={{
-                            backgroundColor: '#1c1c1c',
+                            fontSize: '1.35rem',
+                            fontWeight: 700,
+                            width: '100%',
+                            textAlign: 'center',
+                            p: 0,
+                            mb: 1.5,
                             color: 'white',
-                            '&:hover': {
-                                backgroundColor: '#2a2a2a',
-                            },
-                            borderRadius: '999px',
-                            px: 3,
                         }}
                     >
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={handleStart}
-                        variant="contained"
-                        color="primary"
+                        Ready to start{' '}
+                        <span style={{ color: '#1C3EB5', marginRight: 4 }}>
+                            {selectedQuizIndex !== null ? quizzes[selectedQuizIndex].name : ''}
+                        </span>
+                        <span style={{ marginLeft: 1 }}>?</span>
+                    </DialogTitle>
+                    <DialogActions
                         sx={{
-                            borderRadius: '999px',
-                            px: 3,
+                            justifyContent: 'center',
+                            width: '100%',
+                            mt: 2,
+                            gap: 2,
                         }}
                     >
-                        Start
-                    </Button>
-                </DialogActions>
+                        <Button
+                            onClick={handleClose}
+                            variant="outlined"
+                            sx={{
+                                minWidth: 120,
+                                borderColor: '#1C3EB5',
+                                color: '#1C3EB5',
+                                background: 'rgba(28,62,181,0.08)',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(28,62,181,0.18)',
+                                    borderColor: '#1C3EB5',
+                                    color: '#fff',
+                                },
+                                borderRadius: 2,
+                                px: 3,
+                                fontWeight: 600,
+                                fontSize: '1rem',
+                                transition: 'all 0.18s',
+                                boxShadow: 'none',
+                                height: 48,
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleStart}
+                            variant="contained"
+                            sx={{
+                                minWidth: 120,
+                                borderRadius: 2,
+                                px: 3,
+                                fontWeight: 600,
+                                fontSize: '1rem',
+                                backgroundColor: '#1C3EB5',
+                                color: '#fff',
+                                boxShadow: 'none',
+                                height: 48,
+                                '&:hover': {
+                                    backgroundColor: '#23336C',
+                                    color: '#fff',
+                                },
+                            }}
+                        >
+                            Start
+                        </Button>
+                    </DialogActions>
+                </Box>
             </Dialog>
+            <style jsx global>{`
+                .MuiDialog-root .MuiBackdrop-root {
+                    background: rgba(0, 0, 0, 0.25) !important;
+                    backdrop-filter: blur(24px) saturate(180%) !important;
+                    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                }
+            `}</style>
         </Box>
     );
 };

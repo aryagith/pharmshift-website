@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography, Stack, IconButton, Link } from '@mui/
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 export default function Footer() {
   return (
@@ -63,7 +64,7 @@ export default function Footer() {
                 <InstagramIcon />
                 </IconButton>
               <IconButton
-                href="https://twitter.com"
+                href="https://x.com/PharmShift"
                 target="_blank"
                 rel="noopener"
                 sx={{ color: '#fff' }}
@@ -71,12 +72,20 @@ export default function Footer() {
                 <TwitterIcon />
               </IconButton>
               <IconButton
-                href="https://youtube.com"
+                href="https://www.youtube.com/@PharmShift"
                 target="_blank"
                 rel="noopener"
                 sx={{ color: '#fff' }}
               >
                 <YouTubeIcon />
+              </IconButton>
+              <IconButton
+                href="https://www.linkedin.com/company/pharmshift/"
+                target="_blank"
+                rel="noopener"
+                sx={{ color: '#fff' }}
+              >
+                <LinkedInIcon />
               </IconButton>
             </Stack>
           </Stack>

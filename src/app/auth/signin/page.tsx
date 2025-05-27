@@ -50,7 +50,7 @@ export default function SignInPage() {
     if (res?.error) {
       setAuthError(res.error);
     } else {
-      router.push('/');
+      window.location.href = '/';
     }
   };
 

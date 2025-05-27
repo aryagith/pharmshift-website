@@ -31,7 +31,7 @@ export default function Navbar() {
       router.push('/quizselection');
     }
     if (item === "Home") {
-      router.push('/'); 
+      router.push('/');
     }
   };
 
@@ -50,7 +50,7 @@ export default function Navbar() {
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Toolbar disableGutters sx={{ minHeight: 80 }}>
           {/* Logo - LEFT */}
-            <Button
+          <Button
             disableRipple
             onClick={() => router.push('/')}
             sx={{
@@ -60,13 +60,13 @@ export default function Navbar() {
               color: 'white',
               backgroundColor: 'transparent',
               '&:hover': {
-              backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
               },
             }}
-            >
-          <Typography variant="h4" sx={{ fontWeight: 450 }} >
-            PharmShift 
-          </Typography>
+          >
+            <Typography variant="h4" sx={{ fontWeight: 450 }} >
+              PharmShift
+            </Typography>
           </Button>
 
           {/* Nav Links - CENTERED */}
@@ -80,7 +80,7 @@ export default function Navbar() {
               alignItems: 'center',
             }}
           >
-            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }} onClick={(e) => {router.push('/')}}>
+            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }} onClick={(e) => { router.push('/') }}>
               Home
             </Button>
             <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
@@ -99,31 +99,31 @@ export default function Navbar() {
                 Resources
               </Button>
 
-                <Menu
-                  anchorEl={resourcesAnchor}
-                  open={openResources}
-                  onClose={() => setResourcesAnchor(null)}
-                  // slotProps={{
-                  //   paper: {
-                  //     sx: (theme) => ({
-                  //       background: 'rgba(10, 10, 10, 0.55)',
-                  //       backdropFilter: 'blur(24px) saturate(180%)',
-                  //       WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-                  //       border: '1px solid rgba(255,255,255,0.10)',
-                  //       borderRadius: '14px',
-                  //       boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
-                  //       color: '#fff',
-                  //       overflow: 'hidden',
-                  //       transition: 'background 0.3s',
-                  //     }),
-                    // },
-                  // }
-                // }
-                >
-                  {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
-                    <MenuItem key={item} onClick={() => {handleClick(item)}}>{item}</MenuItem>
-                  ))}
-                </Menu>
+              <Menu
+                anchorEl={resourcesAnchor}
+                open={openResources}
+                onClose={() => setResourcesAnchor(null)}
+                
+              //   paper: {
+              //     sx: (theme) => ({
+              //       background: 'rgba(10, 10, 10, 0.55)',
+              //       backdropFilter: 'blur(24px) saturate(180%)',
+              //       WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              //       border: '1px solid rgba(255,255,255,0.10)',
+              //       borderRadius: '14px',
+              //       boxShadow: '0 8px 32px rgba(0,0,0,0.85)',
+              //       color: '#fff',
+              //       overflow: 'hidden',
+              //       transition: 'background 0.3s',
+              //     }),
+              // },
+              // }
+              // }
+              >
+                {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
+                  <MenuItem key={item} onClick={() => { handleClick(item) }}>{item}</MenuItem>
+                ))}
+              </Menu>
             </Box>
           </Box>
 
@@ -145,9 +145,11 @@ export default function Navbar() {
               <>
                 <IconButton onClick={(e) => setAccountAnchor(e.currentTarget)} sx={{ p: 0 }}>
                   <Avatar
-                    src={session.user?.image || '/default-avatar.png'}
-                    alt={session.user?.name || 'User'}
-                  />
+                    src={session.user?.image || undefined}
+                    sx={{ bgcolor: session.user?.image ? undefined : '#1B4CD7', color: '#fff' }}
+                  >
+                    {!session.user?.image && (session.user?.name ? session.user.name.charAt(0).toUpperCase() : (session.user?.email ? session.user.email.charAt(0).toUpperCase() : '?'))}
+                  </Avatar>
                 </IconButton>
 
                 <Menu
@@ -161,35 +163,35 @@ export default function Navbar() {
                       },
                     },
                   }}
-                  // slotProps={{
-                  //   paper: {
-                  //     sx: {
-                  //       backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                  //       backdropFilter: 'blur(16px)',
-                  //       WebkitBackdropFilter: 'blur(16px)',
-                  //       border: '1px solid rgba(255, 255, 255, 0.15)',
-                  //       borderRadius: '12px',
-                  //       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
-                  //       color: '#fff',
-                  //       overflow: 'hidden',
-                  //     },
-                  //   },
-                  // }}
-                  
+                // slotProps={{
+                //   paper: {
+                //     sx: {
+                //       backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                //       backdropFilter: 'blur(16px)',
+                //       WebkitBackdropFilter: 'blur(16px)',
+                //       border: '1px solid rgba(255, 255, 255, 0.15)',
+                //       borderRadius: '12px',
+                //       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
+                //       color: '#fff',
+                //       overflow: 'hidden',
+                //     },
+                //   },
+                // }}
+
                 >
-                    <MenuItem onClick={() => router.push('/profile')}>
+                  <MenuItem onClick={() => router.push('/profile')}>
                     <AccountCircle sx={{ mr: 1, verticalAlign: 'middle' }} />
                     Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={(event) => {
-                        event.preventDefault();
-                        signOut().catch(console.error);
-                      }}
-                    >
+                  </MenuItem>
+                  <MenuItem
+                    onClick={(event) => {
+                      event.preventDefault();
+                      signOut().catch(console.error);
+                    }}
+                  >
                     <Logout sx={{ mr: 1, verticalAlign: 'middle' }} />
                     Sign out
-                    </MenuItem>
+                  </MenuItem>
                   {/* <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
                   <Logout sx={{alignItems }} />
                   Sign out

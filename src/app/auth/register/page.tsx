@@ -16,38 +16,56 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const handleRegister = async (e: any) => {
-  e.preventDefault();
-  const form = new FormData(e.target);
-  const email = form.get("email") as string;
-  const password = form.get("password") as string;
-  const name = form.get("name") as string;
+    e.preventDefault();
+    setError("");
+    const form = new FormData(e.target);
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
+    const confirmPassword = form.get("confirmPassword") as string;
+    const name = form.get("name") as string;
 
-  const res = await fetch("/api/register", {
-    method: "POST",
-    body: JSON.stringify({ email, password, name }),
-    headers: { "Content-Type": "application/json" },
-  });
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    // Password validation
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
 
-  const result = await res.json();
+    const res = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({ email, password, name }),
+      headers: { "Content-Type": "application/json" },
+    });
 
-  if (!res.ok) {
-    setError(result.error || "Registration failed");
-    return;
-  }
+    const result = await res.json();
 
-  // ✅ Now sign in the user via NextAuth
-  const loginRes = await signIn("credentials", {
-    email,
-    password,
-    redirect: false,
-  });
+    if (!res.ok) {
+      setError(result.error || "Registration failed");
+      return;
+    }
 
-  if (loginRes?.error) {
-    setError("Registered but failed to log in.");
-  } else {
-    router.push("/");
-  }
-};
+    // ✅ Now sign in the user via NextAuth
+    const loginRes = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (loginRes?.error) {
+      setError("Registered but failed to log in.");
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <Box
@@ -95,6 +113,15 @@ export default function RegisterPage() {
           <TextField
             name="password"
             placeholder="Password"
+            type="password"
+            variant="filled"
+            fullWidth
+            required
+            sx={{ mb: 2, input: { color: '#fff' }, backgroundColor: '#222', borderRadius: 1 }}
+          />
+          <TextField
+            name="confirmPassword"
+            placeholder="Confirm Password"
             type="password"
             variant="filled"
             fullWidth
