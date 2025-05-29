@@ -85,3 +85,11 @@ model Option {
 
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
+
+model PasswordResetAttempt {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  attempts     Int      @default(0)
+  lastTried    DateTime
+  timeoutUntil DateTime?
+}
