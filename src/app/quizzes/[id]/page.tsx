@@ -3,6 +3,7 @@
 import React, { use, useEffect, useState } from "react";
 import QuizComponent from "../../components/QuizComponent";
 import { Box, CircularProgress } from "@mui/material";
+import CalculatorDrawer from "../../components/CalculatorDrawer";
 
 // 'params' is now a promise, so unwrap it
 export default function QuizPage({ params }: { params: Promise<{ id: string }> }) {
@@ -29,5 +30,10 @@ export default function QuizPage({ params }: { params: Promise<{ id: string }> }
     );
   }
 
-  return <QuizComponent quiz={quiz} />;
+  return (
+  <>
+  <QuizComponent quiz={quiz} />
+  <CalculatorDrawer />
+  </>
+);
 }
