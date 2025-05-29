@@ -9,6 +9,10 @@ import {
   Typography,
   Divider,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -21,6 +25,10 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [formError, setFormError] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotError, setForgotError] = useState('');
 
   useEffect(() => {
     if (errorParam === 'Use Google login') {
@@ -51,6 +59,30 @@ export default function SignInPage() {
       setAuthError(res.error);
     } else {
       window.location.href = '/';
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setForgotError('');
+    setForgotSent(false);
+    if (!forgotEmail || !isValidEmail(forgotEmail)) {
+      setForgotError('Enter a valid email');
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setForgotSent(true);
+      } else {
+        setForgotError(data.error || 'Failed to send reset email');
+      }
+    } catch (err) {
+      setForgotError('Failed to send reset email');
     }
   };
 
@@ -185,7 +217,12 @@ export default function SignInPage() {
         </form>
 
         <Typography variant="body2" sx={{ textAlign: 'center', color: '#aaa', mb: 1 }}>
-          Forgot Password?
+          <span
+            style={{ color: '#3b82f6', cursor: 'pointer' }}
+            onClick={() => setForgotOpen(true)}
+          >
+            Forgot Password?
+          </span>
         </Typography>
         <Typography variant="body2" sx={{ textAlign: 'center', color: '#aaa' }}>
           Don’t have an account?{' '}
@@ -197,6 +234,50 @@ export default function SignInPage() {
           </span>
         </Typography>
       </Box>
+
+      <Dialog 
+      open={forgotOpen} 
+      onClose={() => setForgotOpen(false)
+        
+      }>
+        <Box
+                            sx={{
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                p: 4,
+                            }}
+                        >
+        <DialogTitle>Reset Password</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+            value={forgotEmail}
+            onChange={e => setForgotEmail(e.target.value)}
+            error={!!forgotError}
+            helperText={forgotError}
+          />
+          {forgotSent && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              If an account exists, a reset link has been sent.
+            </Alert>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setForgotOpen(false)}>Cancel</Button>
+          <Button onClick={handleForgotPassword} disabled={forgotSent}>
+            Send Reset Link
+          </Button>
+        </DialogActions>
+        </Box>
+      </Dialog>
     </Box>
   );
 }
