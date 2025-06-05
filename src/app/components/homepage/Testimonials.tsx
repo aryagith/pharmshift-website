@@ -19,10 +19,10 @@ export default function Testimonials() {
       </Typography>
       <Grid container spacing={4}>
         {testimonials.map(({ name, quote }) => (
-          <Grid item key={name} size={{ xs: 12, sm: 6 }}>
+          <Grid key={name} item xs={12} sm={6}>
             <Card>
               <CardContent>
-                <Typography variant="body1">"{quote}"</Typography>
+                <Typography variant="body1">&quot;{quote}&quot;</Typography>
                 <Typography variant="subtitle2" sx={{ mt: 1, textAlign: 'right' }}>
                   – {name}
                 </Typography>

@@ -67,7 +67,7 @@ const QuizSelectionPage = () => {
 
             <Grid container spacing={4} justifyContent="center" mt={4}>
                 {quizzes.map((quiz, index) => (
-                    <Grid item key={quiz.name}>
+                    <Grid key={quiz.name} >
                         <Card
                             sx={{
                                 width: 200,

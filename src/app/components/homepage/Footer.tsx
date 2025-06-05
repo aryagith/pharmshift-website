@@ -15,6 +15,7 @@ export default function Footer() {
           maxWidth="md"
           sx={{ margin: '0 auto' }}
         >
+          {/* @ts-expect-error MUI Grid type inference issue with xs/sm/md without item prop */}
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" fontWeight={500} gutterBottom>
               Company
@@ -25,7 +26,7 @@ export default function Footer() {
               <Link href="#" underline="hover" color="inherit">Blog</Link>
             </Stack>
           </Grid>
-
+          {/* @ts-expect-error MUI Grid type inference issue with xs/sm/md without item prop */}
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="h6" fontWeight={500} gutterBottom>
               Support

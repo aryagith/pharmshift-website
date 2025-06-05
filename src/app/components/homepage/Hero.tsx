@@ -17,7 +17,8 @@ export default function Hero() {
     >
       <Container>
         <Grid container justifyContent="flex-start" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid xs={12} sm={10} md={6}>
+          {/* @ts-expect-error MUI Grid type inference issue with xs/sm/md without item prop */}
+          <Grid item xs={12} sm={10} md={6}>
             <Box sx={{ maxWidth: 600 }}>
               <Typography
                 variant="h1"

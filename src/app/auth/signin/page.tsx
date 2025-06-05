@@ -14,9 +14,9 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
-export default function SignInPage() {
+function SignInPageContent()  {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get('error');
   const router = useRouter();
@@ -279,5 +279,27 @@ export default function SignInPage() {
         </Box>
       </Dialog>
     </Box>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    // You can customize this fallback to match your site's loading state
+    // For a minimal change, even a null or simple div would work,
+    // but a loading indicator is better UX.
+    <Suspense fallback={
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        width: '100vw', 
+        height: '100vh', 
+        backgroundColor: '#000' /* Match your page background */ 
+      }}>
+        <Typography sx={{color: '#fff'}}>Loading...</Typography>
+      </Box>
+    }>
+      <SignInPageContent />
+    </Suspense>
   );
 }

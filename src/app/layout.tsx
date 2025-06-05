@@ -1,8 +1,8 @@
-import { Opacity } from '@mui/icons-material';
-import Navbar from './components/homepage/Navbar';
+import Navbar from './components/HomePage/Navbar';
 import './globals.css'; // ← Global styles with tailwind + keyframes
 import Providers from './providers'; // ← Client component for session/theme
 import { Poppins, Roboto_Flex } from 'next/font/google';
+import FloatingPill from './components/HomePage/FloatingPill';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -23,20 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           {/* Floating pill animation background */}
-          <div
-            style={{
-              position: 'fixed',
-              top: '25%',
-              right: '3vw',
-              width: '520px',
-              zIndex: 0,
-              animation: 'pillFadeIn 1.5s ease-out forwards',
-              pointerEvents: 'none',
-            }}
-          >
-            <img src="/pill.png" alt="pill" style={{ width: '100%', height: 'auto', opacity:'0.7'}}  />
-          </div>
-            <Navbar />
+          <FloatingPill />
+          <Navbar />
           {/* Content above background */}
           <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
         </Providers>

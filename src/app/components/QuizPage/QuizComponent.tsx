@@ -7,7 +7,7 @@ import {
 import { ArrowBackIos } from "@mui/icons-material";
 import FlagIcon from '@mui/icons-material/Flag';
 import Image from "next/image";
-import ProtectedByLogin from "./ProtectedByLogin";
+import ProtectedByLogin from "../ProtectedByLogin";
 
 type Quiz = {
 	id: string;

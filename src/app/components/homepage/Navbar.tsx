@@ -83,8 +83,8 @@ export default function Navbar() {
             <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }} onClick={(e) => { router.push('/') }}>
               Home
             </Button>
-            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }}>
-              Review
+            <Button color="inherit" sx={{ fontSize: '1.125rem', fontWeight: 300, borderRadius: 2 }} onClick={() => router.push('/reviews')}>
+              Reviews
             </Button>
 
             {/* Resources Dropdown*/}
@@ -156,46 +156,49 @@ export default function Navbar() {
                   anchorEl={accountAnchor}
                   open={openAccount}
                   onClose={() => setAccountAnchor(null)}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                   slotProps={{
                     paper: {
                       sx: {
-                        mt: 1.25, // adjust this value to move the menu down (10px ≈ 1.25 theme spacing)
+                        mt: 1.25,
+                        minWidth: 260,
+                        borderRadius: 3,
+                        p: 1.5,
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
                       },
                     },
                   }}
-                // slotProps={{
-                //   paper: {
-                //     sx: {
-                //       backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                //       backdropFilter: 'blur(16px)',
-                //       WebkitBackdropFilter: 'blur(16px)',
-                //       border: '1px solid rgba(255, 255, 255, 0.15)',
-                //       borderRadius: '12px',
-                //       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
-                //       color: '#fff',
-                //       overflow: 'hidden',
-                //     },
-                //   },
-                // }}
-
                 >
-                  <MenuItem onClick={() => router.push('/profile')}>
+                  {/* User Info */}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1.5, px: 1 }}>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.1 }}>
+                        {session.user?.name || 'User'}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: 13 }}>
+                        {session.user?.email}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box sx={{ my: 1, borderBottom: '1px solid #eee' }} />
+                  {/* Profile Option */}
+                  <MenuItem onClick={() => { setAccountAnchor(null); router.push('/profile'); }}>
                     <AccountCircle sx={{ mr: 1, verticalAlign: 'middle' }} />
                     Profile
                   </MenuItem>
+                  {/* Sign Out Option */}
                   <MenuItem
-                    onClick={(event) => {
+                    onClick={event => {
                       event.preventDefault();
+                      setAccountAnchor(null);
                       signOut().catch(console.error);
                     }}
+                    sx={{ color: 'error.main', fontWeight: 500 }}
                   >
                     <Logout sx={{ mr: 1, verticalAlign: 'middle' }} />
                     Sign out
                   </MenuItem>
-                  {/* <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>
-                  <Logout sx={{alignItems }} />
-                  Sign out
-                  </MenuItem> */}
                 </Menu>
               </>
             )}

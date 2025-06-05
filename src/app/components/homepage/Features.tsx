@@ -20,7 +20,7 @@ export default function Features() {
       </Typography>
       <Grid container marginTop={10} spacing={4} columns={{ xs: 12, sm: 12, md: 12 }}>
         {features.map(({ label, icon }) => (
-          <Grid key={label} item size={{ xs: 6, sm: 3 }}>
+          <Grid key={label} item xs={6} sm={3}>
             <Box textAlign="center">
               {icon}
               <Typography sx={{ mt: 1 }}>{label}</Typography>

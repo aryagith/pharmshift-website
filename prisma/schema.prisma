@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -8,15 +9,15 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(cuid())
-  email          String   @unique
+  id             String    @id @default(cuid())
+  email          String    @unique
   name           String?
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
 
-  accounts       Account[]
-  sessions       Session[]
+  accounts Account[]
+  sessions Session[]
 }
 
 model Account {
@@ -33,7 +34,7 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId], map: "Account_userId_fkey")
@@ -45,7 +46,7 @@ model Session {
   userId       String
   expires      DateTime
 
-  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId], map: "Session_userId_fkey")
 }
@@ -59,37 +60,37 @@ model VerificationToken {
 }
 
 model Quiz {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  createdAt   DateTime   @default(now())
-  timeLimitMinutes Int   // time limit in minutes for the quiz
-  questions   Question[]
+  id               String     @id @default(cuid())
+  title            String
+  description      String?
+  createdAt        DateTime   @default(now())
+  timeLimitMinutes Int // time limit in minutes for the quiz
+  questions        Question[]
 }
 
 model Question {
-  id        String   @id @default(cuid())
-  quizId    String
-  text      String   @db.Text
-  options   Option[]
-  order     Int      // for ordering questions in a quiz
+  id      String   @id @default(cuid())
+  quizId  String
+  text    String   @db.Text
+  options Option[]
+  order   Int // for ordering questions in a quiz
 
-  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model Option {
-  id         String   @id @default(cuid())
+  id         String  @id @default(cuid())
   questionId String
-  text       String   @db.Text
-  isCorrect  Boolean  @default(false)
+  text       String  @db.Text
+  isCorrect  Boolean @default(false)
 
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model PasswordResetAttempt {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  attempts     Int      @default(0)
+  id           String    @id @default(cuid())
+  email        String    @unique
+  attempts     Int       @default(0)
   lastTried    DateTime
   timeoutUntil DateTime?
 }
