@@ -18,6 +18,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  reviews  Review[] // <-- Add this line for relation
 }
 
 model Account {
@@ -93,4 +94,14 @@ model PasswordResetAttempt {
   attempts     Int       @default(0)
   lastTried    DateTime
   timeoutUntil DateTime?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5
+  comment   String?
+  name      String?  // Add this line for user name or anonymous
+  createdAt DateTime @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
 }

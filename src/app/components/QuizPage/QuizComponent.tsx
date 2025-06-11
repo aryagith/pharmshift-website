@@ -26,10 +26,10 @@ const alphaLabel = (idx: number) => String.fromCharCode(65 + idx) + "."; // "A."
 export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 	const [current, setCurrent] = useState(0);
 	const [selected, setSelected] = useState<string | null>(null);
-	const [answers, setAnswers] = useState<(string | null)[]>(Array(quiz.questions.length).fill(null));
+	const [answers, setAnswers] = useState<(string | null)[]>(Array(quiz.questions?.length).fill(null));
 	const [showResult, setShowResult] = useState(false);
 	const [timer, setTimer] = useState(quiz.timeLimitMinutes * 60);
-	const [flagged, setFlagged] = useState<boolean[]>(Array(quiz.questions.length).fill(false));
+	const [flagged, setFlagged] = useState<boolean[]>(Array(quiz.questions?.length).fill(false));
 	const [questionKey, setQuestionKey] = useState(0);
 	const [animate, setAnimate] = useState(false);
 
@@ -52,7 +52,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 		updated[current] = selected;
 		setAnswers(updated);
 		setSelected(null);
-		if (current < quiz.questions.length - 1) {
+		if (current < quiz.questions?.length - 1) {
 			setAnimate(true);
 			setTimeout(() => {
 				setCurrent((prev) => prev + 1);
@@ -86,7 +86,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 
 	const handleRestart = () => {
 		setCurrent(0);
-		setAnswers(Array(quiz.questions.length).fill(null));
+		setAnswers(Array(quiz.questions?.length).fill(null));
 		setSelected(null);
 		setShowResult(false);
 		setTimer(quiz.timeLimitMinutes * 60);
@@ -101,8 +101,8 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 	};
 
 	const correctCount = answers.filter((a, i) => {
-		const q = quiz.questions[i];
-		return q.options.find(opt => opt.id === a)?.isCorrect;
+		const q = quiz.questions?.[i];
+		return q && q.options.find(opt => opt.id === a)?.isCorrect;
 	}).length;
 
 	const minutes = Math.floor(timer / 60);
@@ -181,7 +181,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 										textShadow: "0 2px 24px #1C4ED880",
 									}}
 								>
-									You scored {correctCount} / {quiz.questions.length}
+									You scored {correctCount} / {quiz.questions?.length}
 								</Typography>
 								<Button
 									onClick={handleRestart}
@@ -222,7 +222,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 											fontSize: "20px",
 											opacity: 0.75,
 											marginLeft: 2,
-										}}>/ {quiz.questions.length}</span>
+										}}>/ {quiz.questions?.length}</span>
 									</Typography>
 									<Button
 										variant={flagged[current] ? "contained" : "outlined"}
@@ -266,10 +266,10 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 										lineHeight: 1.32,
 									}}
 								>
-									{quiz.questions[current].text}
+									{quiz.questions?.[current]?.text}
 								</Typography>
 								<RadioGroup value={selected !== null ? selected : answers[current]} onChange={handleSelect}>
-									{quiz.questions[current].options.map((opt, idx) => (
+									{quiz.questions?.[current]?.options.map((opt, idx) => (
 										<FormControlLabel
 											key={opt.id}
 											value={opt.id}
@@ -340,7 +340,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 											boxShadow: "0 2px 16px #1C4ED880",
 										}}
 									>
-										{current === quiz.questions.length - 1 ? "Finish" : "Next"}
+										{current === quiz.questions?.length - 1 ? "Finish" : "Next"}
 									</Button>
 								</Stack>
 							</>
@@ -398,7 +398,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 							Questions
 						</Typography>
 						<Stack direction="row" flexWrap="wrap" gap={1.2}>
-							{quiz.questions.map((_, idx) => {
+							{quiz.questions?.map((_, idx) => {
 								const isCurrent = current === idx;
 								const isAttempted = answers[idx] !== null;
 								return (
