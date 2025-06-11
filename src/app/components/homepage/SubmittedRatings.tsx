@@ -62,6 +62,13 @@ export default function SubmittedRatings() {
   const userId = session?.user?.id;
   const alreadyReviewed = userId && ratings.some(r => ('userId' in r) && r.userId === userId);
 
+  // Track expanded state for each review
+  const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
+
+  const handleToggleExpand = (idx: number) => {
+    setExpanded(prev => ({ ...prev, [idx]: !prev[idx] }));
+  };
+
   return (
     <Box sx={{ py: 10 }}>
       <Container>
@@ -74,11 +81,14 @@ export default function SubmittedRatings() {
             <Box key={index} px={1}>
               <Card
                 sx={{
-                  backgroundColor: '#121212',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)', // for Safari
                   borderRadius: 3,
-                  height: 200,  
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: 'white',
                 }}
+                elevation={3}
               >
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={1} mb={1}>
@@ -99,9 +109,31 @@ export default function SubmittedRatings() {
                     </Typography>
                   </Stack>
                   {entry.comment && (
-                    <Typography variant="body2" gutterBottom sx={{ color: '#fff', mb: 1, minHeight: 36 }}>
-                      {entry.comment}
-                    </Typography>
+                    <>
+                      <Typography variant="body2" gutterBottom sx={{ color: '#fff', mb: 1, minHeight: 36 }}>
+                        {expanded[index] || entry.comment.length <= 120
+                          ? entry.comment
+                          : entry.comment.slice(0, 120) + '...'}
+                      </Typography>
+                      {entry.comment.length > 120 && (
+                        <Box sx={{ textAlign: 'right', mb: 1 }}>
+                          <button
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: '#1C4ED8',
+                              cursor: 'pointer',
+                              fontSize: 13,
+                              fontWeight: 600,
+                              padding: 0,
+                            }}
+                            onClick={() => handleToggleExpand(index)}
+                          >
+                            {expanded[index] ? 'Show less' : 'Show more'}
+                          </button>
+                        </Box>
+                      )}
+                    </>
                   )}
                   <Stack direction="row" justifyContent="space-between" alignItems="center" mt={2}>
                     <Stack direction="row" alignItems="center" spacing={1} sx={{ minWidth: 0 }}>

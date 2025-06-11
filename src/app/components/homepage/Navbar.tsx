@@ -121,7 +121,38 @@ export default function Navbar() {
               // }
               >
                 {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
-                  <MenuItem key={item} onClick={() => { handleClick(item) }}>{item}</MenuItem>
+                  <MenuItem key={item} onClick={() => { handleClick(item) }}>
+                    <Box>
+                      <Typography sx={{ color: 'white', fontSize: '1rem', fontWeight: 400 }}>{item}</Typography>
+                      {(item === 'Chatbot' || item === 'OSCE Studybot Review') && (
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            letterSpacing: 0.5,
+                            background: 'linear-gradient(90deg, #6a5af9, #00c6fb, #6a5af9)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            textFillColor: 'transparent',
+                            animation: 'gradient-move 3s ease-in-out infinite',
+                            '@keyframes gradient-move': {
+                              '0%': { backgroundPosition: '0% 50%' },
+                              '50%': { backgroundPosition: '100% 50%' },
+                              '100%': { backgroundPosition: '0% 50%' },
+                            },
+                            backgroundSize: '200% 200%',
+                            opacity: 1, // Ensure full visibility
+                            textShadow: '0 1px 8px rgba(106,90,249,0.25), 0 1px 8px rgba(0,198,251,0.15)',
+                          }}
+                        >
+                          Coming soon!
+                        </Typography>
+                      )}
+                    </Box>
+                  </MenuItem>
                 ))}
               </Menu>
             </Box>
@@ -185,7 +216,36 @@ export default function Navbar() {
                   {/* Profile Option */}
                   <MenuItem onClick={() => { setAccountAnchor(null); router.push('/profile'); }}>
                     <AccountCircle sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    Profile
+                    <Box>
+                      <Typography sx={{ color: 'white', fontSize: '1rem', fontWeight: 400 }}>Profile</Typography>
+                      {
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            letterSpacing: 0.5,
+                            background: 'linear-gradient(90deg, #6a5af9, #00c6fb, #6a5af9)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            textFillColor: 'transparent',
+                            animation: 'gradient-move 3s ease-in-out infinite',
+                            '@keyframes gradient-move': {
+                              '0%': { backgroundPosition: '0% 50%' },
+                              '50%': { backgroundPosition: '100% 50%' },
+                              '100%': { backgroundPosition: '0% 50%' },
+                            },
+                            backgroundSize: '200% 200%',
+                            opacity: 1, // Ensure full visibility
+                            textShadow: '0 1px 8px rgba(106,90,249,0.25), 0 1px 8px rgba(0,198,251,0.15)',
+                          }}
+                        >
+                          Coming soon!
+                        </Typography>
+                      }
+                    </Box>
                   </MenuItem>
                   {/* Sign Out Option */}
                   <MenuItem
@@ -197,7 +257,7 @@ export default function Navbar() {
                     sx={{ color: 'error.main', fontWeight: 500 }}
                   >
                     <Logout sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    Sign out
+                    <Typography sx={{fontSize: '1rem', fontWeight: 400 }}>Sign Out</Typography>
                   </MenuItem>
                 </Menu>
               </>

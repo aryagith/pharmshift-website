@@ -35,6 +35,8 @@ export default function ReviewsPage() {
   const alreadyReviewed = userId && dbRatings.some(r => r.userId === userId);
   // Track if we're editing an existing review
   const [editingReview, setEditingReview] = useState(false);
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const [feedbackError, setFeedbackError] = useState('');
 
   useEffect(() => {
     if (!session) return;
@@ -46,7 +48,7 @@ export default function ReviewsPage() {
           const db = await res.json();
           setDbRatings(db);
         }
-      } catch {}
+      } catch { }
       setLoading(false);
     })();
   }, [session, submitted]);
@@ -103,13 +105,34 @@ export default function ReviewsPage() {
         const db = await reviewsRes.json();
         setDbRatings(db);
       }
-    } catch {}
+    } catch { }
     setTimeout(() => setSubmitted(false), 2000);
   };
 
   // Handle feedback form
   const handleFeedbackChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFeedback({ ...feedback, [e.target.name]: e.target.value });
+  };
+
+  // Handle feedback form submission
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFeedbackError('');
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedback),
+      });
+      if (res.ok) {
+        setFeedbackSent(true);
+      } else {
+        const data = await res.json();
+        setFeedbackError(data.error || 'Failed to send feedback');
+      }
+    } catch {
+      setFeedbackError('Failed to send feedback');
+    }
   };
 
   const handleChangeReview = async () => {
@@ -123,6 +146,7 @@ export default function ReviewsPage() {
   };
 
   return (
+    <ProtectedByLogin>
     <Box sx={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #10131a 100%)', minHeight: '100vh', py: 8 }}>
       <Container maxWidth="md">
         {/* Leave a Rating */}
@@ -186,16 +210,20 @@ export default function ReviewsPage() {
                   fullWidth
                   variant="filled"
                   value={comment}
-                  onChange={e => setComment(e.target.value)}
+                  onChange={e => {
+                    if (e.target.value.length <= 300) setComment(e.target.value);
+                  }}
                   sx={{
-                    mb: 3,
+                    mb: 1,
                     input: { color: '#fff' },
                     textarea: { color: '#fff' },
                     background: '#181c24',
                     borderRadius: 2,
                     label: { color: '#aaa' },
                   }}
-                  placeholder="Share your thoughts..."
+                  placeholder="Share your thoughts... (max 300 characters)"
+                  helperText={`${comment.length}/300 characters`}
+                  FormHelperTextProps={{ sx: { color: comment.length === 300 ? 'error.main' : '#aaa' } }}
                 />
                 <Stack direction="row" alignItems="center" spacing={2} mb={2}>
                   <Stack direction="row" alignItems="center" spacing={1}>
@@ -249,7 +277,6 @@ export default function ReviewsPage() {
                     </span>
                   </Stack>
                 </Stack>
-                <ProtectedByLogin>
                   <Button
                     type="submit"
                     fullWidth
@@ -264,12 +291,11 @@ export default function ReviewsPage() {
                       boxShadow: '0 2px 16px #1C4ED880',
                       mt: 1,
                     }}
-                    disabled={submitted || rating === 0}
+                    disabled={submitted || rating === 0 || comment.length > 300}
                   >
                     {submitted ? 'Thank you!' : 'Submit Rating'}
                   </Button>
                   {showLogin && <ProtectedByLogin />}
-                </ProtectedByLogin>
               </form>
             </>
           )}
@@ -277,60 +303,77 @@ export default function ReviewsPage() {
 
         {/* Submitted Ratings */}
         <SubmittedRatings />
-        
+
         {/* Feedback Form */}
         <Paper elevation={0} sx={{ p: { xs: 2, md: 5 }, borderRadius: 4, background: 'rgba(10,18,38,0.85)', boxShadow: '0 8px 32px 0 rgba(28,78,216,0.10)', border: '1.5px solid rgba(44,48,54,0.26)' }}>
-          <Typography variant="h4" fontWeight={700} textAlign="center" mb={2}>
-            Help Us Do Better
-          </Typography>
-          <Typography textAlign="center" mb={3} color="#b0b0b0">
-            We value your feedback! If you&apos;d like us to reach out to you, please leave your contact information below.
-          </Typography>
-          <form>
-            <Stack spacing={2} mb={2}>
-              <TextField
-                name="email"
-                label="Email"
-                variant="filled"
-                fullWidth
-                value={feedback.email}
-                onChange={handleFeedbackChange}
-                sx={{ input: { color: '#fff' }, background: '#181c24', borderRadius: 2, label: { color: '#aaa' } }}
-                placeholder="Your email"
-              />
-              <TextField
-                name="message"
-                label="Message"
-                variant="filled"
-                fullWidth
-                multiline
-                minRows={3}
-                value={feedback.message}
-                onChange={handleFeedbackChange}
-                sx={{ input: { color: '#fff' }, textarea: { color: '#fff' }, background: '#181c24', borderRadius: 2, label: { color: '#aaa' } }}
-                placeholder="Your message"
-              />
-            </Stack>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                background: 'linear-gradient(90deg, #1C4ED8 10%, #1C4ED8 90%)',
-                color: '#fff',
-                fontWeight: 600,
-                borderRadius: 3,
-                py: 1.5,
-                fontSize: 18,
-                boxShadow: '0 2px 16px #1C4ED880',
-                mt: 1,
-              }}
-            >
-              Submit
-            </Button>
-          </form>
+          {feedbackSent ? (
+            <Box sx={{ py: 6, textAlign: 'center' }}>
+              <Typography variant="h5" color='#1C4ED8' fontWeight={700} mb={2}>
+                Thanks for your feedback!
+              </Typography>
+              <Typography color="#b0b0b0">
+                We appreciate your input and will review it soon.
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <Typography variant="h4" fontWeight={700} textAlign="center" mb={2}>
+                Help Us Do Better
+              </Typography>
+              <Typography textAlign="center" mb={3} color="#b0b0b0">
+                We value your feedback! If you&apos;d like us to reach out to you, please leave your contact information below.
+              </Typography>
+              <form onSubmit={handleFeedbackSubmit}>
+                <Stack spacing={2} mb={2}>
+                  <TextField
+                    name="email"
+                    label="Email"
+                    variant="filled"
+                    fullWidth
+                    value={feedback.email}
+                    onChange={handleFeedbackChange}
+                    sx={{ input: { color: '#fff' }, background: '#181c24', borderRadius: 2, label: { color: '#aaa' } }}
+                    placeholder="Your email"
+                  />
+                  <TextField
+                    name="message"
+                    label="Message"
+                    variant="filled"
+                    fullWidth
+                    multiline
+                    minRows={3}
+                    value={feedback.message}
+                    onChange={handleFeedbackChange}
+                    sx={{ input: { color: '#fff' }, textarea: { color: '#fff' }, background: '#181c24', borderRadius: 2, label: { color: '#aaa' } }}
+                    placeholder="Your message"
+                  />
+                </Stack>
+                {feedbackError && (
+                  <Typography color="error" mb={2}>{feedbackError}</Typography>
+                )}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    background: 'linear-gradient(90deg, #1C4ED8 10%, #1C4ED8 90%)',
+                    color: '#fff',
+                    fontWeight: 600,
+                    borderRadius: 3,
+                    py: 1.5,
+                    fontSize: 18,
+                    boxShadow: '0 2px 16px #1C4ED880',
+                    mt: 1,
+                  }}
+                >
+                  Submit
+                </Button>
+              </form>
+            </>
+          )}
         </Paper>
       </Container>
     </Box>
+    </ProtectedByLogin>
   );
 }
