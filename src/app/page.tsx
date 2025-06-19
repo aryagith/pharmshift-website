@@ -1,12 +1,12 @@
 'use client';
 // app/page.tsx
 
-import Navbar from './components/HomePage/Navbar';
-import Hero from './components/HomePage/Hero';
-import Features from './components/HomePage/Features';
-import Testimonials from './components/HomePage/Testimonials';
-import Footer from './components/HomePage/Footer';
-import SubmittedRatings from './components/HomePage/SubmittedRatings';
+import Navbar from './components/homePage-temp/Navbar';
+import Hero from './components/homePage-temp/Hero';
+import Features from './components/homePage-temp/Features';
+import Testimonials from './components/homePage-temp/Testimonials';
+import Footer from './components/homePage-temp/Footer';
+import SubmittedRatings from './components/homePage-temp/SubmittedRatings';
 import { useEffect } from 'react';
 
 export default function HomePage() {

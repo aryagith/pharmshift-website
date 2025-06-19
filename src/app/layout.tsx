@@ -1,8 +1,8 @@
-import Navbar from './components/HomePage/Navbar';
+import Navbar from './components/homePage-temp/Navbar';
 import './globals.css'; // ← Global styles with tailwind + keyframes
 import Providers from './providers'; // ← Client component for session/theme
 import { Poppins, Roboto_Flex } from 'next/font/google';
-import FloatingPill from './components/HomePage/FloatingPill';
+import FloatingPill from './components/homePage-temp/FloatingPill';
 
 const poppins = Poppins({
   subsets: ['latin'],

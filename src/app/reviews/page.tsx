@@ -14,7 +14,7 @@ import {
   Paper,
   Grid,
 } from '@mui/material';
-import SubmittedRatings from '../components/HomePage/SubmittedRatings';
+import SubmittedRatings from '../components/homePage-temp/SubmittedRatings';
 import ProtectedByLogin from '../components/ProtectedByLogin';
 import { useSession } from 'next-auth/react';
 
