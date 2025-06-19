@@ -3,5 +3,5 @@ import NextAuth from "next-auth";
 import { authOptions } from "../../../../lib/auth"; // Adjust path if src/lib/auth.ts is elsewhere
 
 const handler = NextAuth(authOptions);
-// redeployment commit
+
 export { handler as GET, handler as POST };
