@@ -1,9 +1,9 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import QuizComponent from "../../components/quizPage-temp/QuizComponent";
+import QuizComponent from "../../components/quizpage/QuizComponent";
 import { Box, CircularProgress } from "@mui/material";
-import CalculatorDrawer from "../../components/quizPage-temp/CalculatorDrawer";
+import CalculatorDrawer from "../../components/quizpage/CalculatorDrawer";
 
 // 'params' is now a promise, so unwrap it
 export default function QuizPage({ params }: { params: Promise<{ id: string }> }) {
