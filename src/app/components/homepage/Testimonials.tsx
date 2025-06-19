@@ -14,7 +14,7 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <Container sx={{ py: 8, textAlign: 'center', color: 'white' }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         What Students Say
       </Typography>
 
