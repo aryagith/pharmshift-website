@@ -3,16 +3,30 @@ import React, { useEffect, useState } from "react";
 
 export default function FloatingPill() {
   const [rotation, setRotation] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [fallY, setFallY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollAmount = window.scrollY;
-      setRotation((scrollAmount / 5) % 360);
+      const y = window.scrollY;
+      setRotation((y / 5) % 360);
+      const maxFall = window.innerHeight * 0.8;
+      setFallY(Math.min(y * 0.2, maxFall));
     };
 
+    setTimeout(() => setVisible(true), 100);
+
+    handleScroll(); // initial set
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Dynamically merge scale + translate + rotate
+  const combinedTransform = `
+    translateY(${fallY}px)
+    rotateZ(${rotation}deg)
+    scale(${visible ? 1 : 0.9})
+  `;
 
   return (
     <div className="floating-pill-container">
@@ -22,7 +36,8 @@ export default function FloatingPill() {
         alt="pill"
         className="floating-pill-image"
         style={{
-          transform: `rotateZ(${rotation}deg)`,
+          transform: combinedTransform,
+          opacity: visible ? 0.9 : 0,
         }}
       />
 
@@ -42,7 +57,6 @@ export default function FloatingPill() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: transparent;
           z-index: -1;
           filter: drop-shadow(0 0 30px rgba(0, 48, 94, 0.8));
         }
@@ -50,9 +64,8 @@ export default function FloatingPill() {
         .floating-pill-image {
           width: 100%;
           height: auto;
-          opacity: 0.9;
-          transition: transform 0.1s linear;
-          will-change: transform;
+          transition: transform 0.4s ease-out, opacity 0.6s ease-in;
+          will-change: transform, opacity;
         }
       `}</style>
     </div>
