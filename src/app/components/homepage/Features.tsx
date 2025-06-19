@@ -18,7 +18,6 @@ export default function Features() {
       <Typography variant="h4" textAlign="center" gutterBottom>
         What is PharmShift?
       </Typography>
-      {/* new line for new deployment */}
       <Typography variant="body1" sx={{ mb: 6, maxWidth: 600, mx: 'auto' }}>
         PharmShift is your all-in-one study assistant for OSCE exams,
         combining AI-driven quizzes, interactive study tools, and personalized feedback
