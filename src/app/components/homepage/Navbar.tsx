@@ -189,10 +189,52 @@ export default function Navbar() {
                         anchorEl={accountAnchor}
                         open={Boolean(accountAnchor)}
                         onClose={() => setAccountAnchor(null)}
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                       >
-                        <MenuItem onClick={() => { setAccountAnchor(null); router.push('/profile'); }}>
-                          <AccountCircle sx={{ mr: 1 }} />
-                          Profile
+                        {/* User info at the top */}
+                        <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
+                          <Typography variant="subtitle1" fontWeight={600} sx={{ color: '#1C4ED8', fontSize: 16, lineHeight: 1.1, mb: 0 }}>
+                            {session.user?.name || 'User'}
+                          </Typography>
+                          <Typography variant="body2" sx={{ color: '#b0b8d1', fontSize: 14, lineHeight: 1.1, mb: 0 }}>
+                            {session.user?.email}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ borderBottom: '1px solid #e0e0e0', mx: 1, mb: 0.5 }} />
+                        {/* Profile and Sign Out options */}
+                        <MenuItem onClick={() => { setAccountAnchor(null); router.push('/profile'); }} sx={{ display: 'block', alignItems: 'flex-start' }}>
+                          <Box display="flex" alignItems="center">
+                            <AccountCircle sx={{ mr: 1 }} />
+                            <Typography component="span">Profile</Typography>
+                          </Box>
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              display: 'block',
+                              fontWeight: 700,
+                              fontSize: '0.85rem',
+                              letterSpacing: 0.5,
+                              background: 'linear-gradient(90deg, #6a5af9, #00c6fb, #6a5af9)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text',
+                              textFillColor: 'transparent',
+                              animation: 'gradient-move 3s ease-in-out infinite',
+                              '@keyframes gradient-move': {
+                                '0%': { backgroundPosition: '0% 50%' },
+                                '50%': { backgroundPosition: '100% 50%' },
+                                '100%': { backgroundPosition: '0% 50%' },
+                              },
+                              backgroundSize: '200% 200%',
+                              opacity: 1,
+                              textShadow: '0 1px 8px rgba(106,90,249,0.25), 0 1px 8px rgba(0,198,251,0.15)',
+                              ml: 4,
+                              mt: 0.5,
+                            }}
+                          >
+                            Coming soon!
+                          </Typography>
                         </MenuItem>
                         <MenuItem
                           onClick={(e) => {

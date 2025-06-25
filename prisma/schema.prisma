@@ -16,9 +16,43 @@ model User {
   image          String?
   hashedPassword String?
 
+  quizAttempts QuizAttempt[] 
   accounts Account[]
   sessions Session[]
-  reviews  Review[] // <-- Add this line for relation
+  reviews  Review[] 
+}
+
+model Question {
+  id      String   @id @default(cuid())
+  quizId  String
+  text    String   @db.Text
+  options Option[]
+  order   Int // for ordering questions in a quiz
+  attempts          QuestionAttempt[]
+  
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizAttempt {
+  id           String            @id @default(uuid())
+  user         User              @relation(fields: [userId], references: [id])
+  userId       String
+  quiz         Quiz              @relation(fields: [quizId], references: [id])
+  quizId       String
+  startedAt    DateTime          @default(now())
+  endedAt      DateTime?
+  questions    QuestionAttempt[]
+}
+
+model QuestionAttempt {
+  id            String   @id @default(uuid())
+  quizAttempt   QuizAttempt @relation(fields: [quizAttemptId], references: [id])
+  quizAttemptId String
+  question      Question  @relation(fields: [questionId], references: [id])
+  questionId    String
+  option        Option?   @relation(fields: [optionId], references: [id])
+  optionId      String?
+  isCorrect     Boolean
 }
 
 model Account {
@@ -66,17 +100,9 @@ model Quiz {
   description      String?
   createdAt        DateTime   @default(now())
   timeLimitMinutes Int // time limit in minutes for the quiz
+  
   questions        Question[]
-}
-
-model Question {
-  id      String   @id @default(cuid())
-  quizId  String
-  text    String   @db.Text
-  options Option[]
-  order   Int // for ordering questions in a quiz
-
-  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  attempts         QuizAttempt[] 
 }
 
 model Option {
@@ -86,6 +112,7 @@ model Option {
   isCorrect  Boolean @default(false)
 
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  attempts   QuestionAttempt[]
 }
 
 model PasswordResetAttempt {
@@ -98,9 +125,9 @@ model PasswordResetAttempt {
 
 model Review {
   id        String   @id @default(cuid())
-  rating    Int      // 1-5
+  rating    Int     
   comment   String?
-  name      String?  // Add this line for user name or anonymous
+  name      String?  
   createdAt DateTime @default(now())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
