@@ -3,13 +3,14 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(req: NextRequest) {
-  const host = req.headers.get('host')
+  const hostHeader = req.headers.get('host')
+  const hostname = hostHeader ? hostHeader.split(':')[0] : ''
 
-  if (host === 'pharmshift.com') {
+  if (hostname === 'pharmshift.com') {
     const url = req.nextUrl
     url.host = 'www.pharmshift.com'
     return NextResponse.redirect(url, 301)
   }
-  console.log('Middleware executed for host:', host)
+  console.log('Middleware executed for host:', hostname)
   return NextResponse.next()
 }
