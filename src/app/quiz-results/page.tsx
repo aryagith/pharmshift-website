@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, LinearProgress, Button } from "@mui/material";
+import React, { Suspense, useEffect, useState } from "react";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, LinearProgress, Button, CircularProgress } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function QuizResultsPage() {
@@ -26,7 +26,9 @@ export default function QuizResultsPage() {
   }
 
   if (loading) {
-    return <Box p={4}><Typography>Loading results...</Typography><LinearProgress sx={{ mt: 2 }} /></Box>;
+    return <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
+          <CircularProgress size={64} thickness={5} color="primary" />
+        </Box>;
   }
 
   if (!results) {
@@ -36,6 +38,11 @@ export default function QuizResultsPage() {
   const { quizTitle, questions, correctCount, percentage } = results;
 
   return (
+    <Suspense fallback={
+      <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
+        <CircularProgress size={64} thickness={5} color="primary" />
+      </Box>
+    }>
     <Box minHeight="100vh" bgcolor="#050509" p={0}>
       <Box maxWidth={900} mx="auto" pt={6} px={2}>
         <Typography variant="h4" fontWeight={800} color="#1C4ED8" mb={2}>
@@ -72,5 +79,6 @@ export default function QuizResultsPage() {
         <Button variant="contained" sx={{ mt: 4, fontWeight: 700, fontSize: 18, borderRadius: 3 }} onClick={() => router.push("/quizselection")}>Back to Quizzes</Button>
       </Box>
     </Box>
+    </Suspense>
   );
 }
