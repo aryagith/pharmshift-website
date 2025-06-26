@@ -63,7 +63,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 			console.error("Failed to submit quiz:", data);
 		}
 	};
-	
+
 
 	const handleNext = () => {
 		const updated = [...answers];
@@ -216,40 +216,66 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 									>
 										You scored {correctCount} / {quiz.questions?.length}
 									</Typography>
-									<Button
-										onClick={handleRestart}
-										variant="contained"
-										sx={{
-											background: "linear-gradient(90deg, #1C4ED8 10%, #1C4ED8 90%)",
-											color: "#fff",
-											borderRadius: 3,
-											mt: 2,
-											px: 5,
-											fontWeight: 700,
-											fontSize: 18,
-											boxShadow: "0 2px 16px #1C4ED880",
-										}}
-									>
-										Restart Quiz
-									</Button>
-									{quizAttemptId && (
+									<Box display="flex" justifyContent="center" gap={2} mt={2}>
 										<Button
+											onClick={handleRestart}
 											variant="outlined"
 											sx={{
-												mt: 3,
-												ml: 2,
 												borderRadius: 3,
 												fontWeight: 700,
 												fontSize: 18,
-												color: "#1C4ED8",
-												borderColor: "#1C4ED8",
 												px: 5,
+												minWidth: 200,
+												color: '#fff',
+												borderColor: '#1C4ED8',
+												background: 'linear-gradient(90deg, #1C4ED8 10%, #1C4ED8 90%)',
+												cursor: 'pointer',
+												boxShadow: "0 2px 16px #1C4ED880",
+												transition: 'background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s',
+												'&:hover': {
+													background: 'linear-gradient(90deg, #163a7a 10%, #1C4ED8 90%)',
+													color: '#fff',
+													borderColor: '#1C4ED8',
+													boxShadow: "0 4px 24px #1C4ED880",
+												},
 											}}
-											onClick={() => window.location.href = `/quiz-results?quizAttemptId=${quizAttemptId}`}
+										>
+											Restart Quiz
+										</Button>
+										<Button
+											variant="outlined"
+											disabled={!quizAttemptId}
+											sx={{
+												borderRadius: 3,
+												fontWeight: 700,
+												fontSize: 18,
+												px: 5,
+												minWidth: 200,
+												color: quizAttemptId ? '#fff' : '#aaa',
+												borderColor: quizAttemptId ? '#1C4ED8' : '#aaa',
+												background: quizAttemptId ? 'linear-gradient(90deg, #1C4ED8 10%, #1C4ED8 90%)' : 'rgba(255,255,255,0.05)',
+												cursor: quizAttemptId ? 'pointer' : 'not-allowed',
+												boxShadow: quizAttemptId ? "0 2px 16px #1C4ED880" : "none",
+												transition: 'background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s',
+												'&:hover': quizAttemptId ? {
+													background: 'linear-gradient(90deg, #163a7a 10%, #1C4ED8 90%)',
+													color: '#fff',
+													borderColor: '#1C4ED8',
+													boxShadow: "0 4px 24px #1C4ED880",
+												} : {
+													background: '#f5f5f5',
+													color: '#aaa',
+													borderColor: '#aaa',
+													boxShadow: "none",
+												},
+											}}
+											onClick={() => {
+												if (quizAttemptId) window.location.href = `/quiz-results?quizAttemptId=${quizAttemptId}`;
+											}}
 										>
 											Review your answers
 										</Button>
-									)}
+									</Box>
 								</Box>
 							) : (
 								<>
@@ -507,7 +533,7 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 						</Paper>
 					</Box>
 				</Box>
-			</Box>
-		</ProtectedByLogin>
+			</Box >
+		</ProtectedByLogin >
 	);
 }
