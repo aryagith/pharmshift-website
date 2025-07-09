@@ -7,7 +7,7 @@ import {
 import { ArrowBackIos } from "@mui/icons-material";
 import FlagIcon from '@mui/icons-material/Flag';
 import Image from "next/image";
-import ProtectedByLogin from "../ProtectedByLogin";
+import ProtectedByLogin from "../utils/ProtectedByLogin";
 
 type Quiz = {
 	id: string;
@@ -28,21 +28,48 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 	const [selected, setSelected] = useState<string | null>(null);
 	const [answers, setAnswers] = useState<(string | null)[]>(Array(quiz.questions?.length).fill(null));
 	const [showResult, setShowResult] = useState(false);
-	const [timer, setTimer] = useState(quiz.timeLimitMinutes * 60);
 	const [flagged, setFlagged] = useState<boolean[]>(Array(quiz.questions?.length).fill(false));
 	const [questionKey, setQuestionKey] = useState(0);
 	const [animate, setAnimate] = useState(false);
 	const [quizAttemptId, setQuizAttemptId] = useState<string | null>(null);
 
+	// Persist timer in localStorage
+	const timerKey = `quiz-timer-${quiz.id}`;
+	const startTimeKey = `quiz-startTime-${quiz.id}`;
+	const [timer, setTimer] = useState(quiz.timeLimitMinutes * 60);
+	const [initialized, setInitialized] = useState(false);
+
+	// On mount, sync timer with localStorage (only use start time)
 	useEffect(() => {
-		if (showResult) return;
+		if (initialized) return;
+		let start = localStorage.getItem(startTimeKey);
+		if (!start) {
+			start = Date.now().toString();
+			localStorage.setItem(startTimeKey, start);
+		}
+		const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
+		setTimer(Math.max(quiz.timeLimitMinutes * 60 - elapsed, 0));
+		setInitialized(true);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [initialized]);
+
+	useEffect(() => {
+		if (!initialized || showResult) return;
 		if (timer <= 0) {
 			setShowResult(true);
 			return;
 		}
-		const interval = setInterval(() => setTimer((t) => t - 1), 1000);
+		const interval = setInterval(() => {
+			setTimer((t) => t - 1);
+		}, 1000);
 		return () => clearInterval(interval);
-	}, [timer, showResult]);
+	}, [timer, showResult, initialized]);
+
+	useEffect(() => {
+		if (showResult) {
+			localStorage.removeItem(startTimeKey);
+		}
+	}, [showResult, startTimeKey]);
 
 	const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSelected(e.target.value);
@@ -107,7 +134,9 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 		setAnswers(Array(quiz.questions?.length).fill(null));
 		setSelected(null);
 		setShowResult(false);
+		localStorage.setItem(startTimeKey, Date.now().toString());
 		setTimer(quiz.timeLimitMinutes * 60);
+		setInitialized(true);
 	};
 
 	const handleFlag = () => {
@@ -179,11 +208,11 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 							sx={{
 								p: { xs: 2.5, md: 5 },
 								borderRadius: "22px",
-								bgcolor: "rgba(10, 18, 38, 0.72)",
-								backdropFilter: "blur(32px) saturate(180%)",
-								WebkitBackdropFilter: "blur(32px) saturate(180%)",
-								border: "1.5px solid rgba(255,255,255,0.13)",
-								boxShadow: "0 12px 48px 0 rgba(28,78,216,0.18)",
+								bgcolor: "rgba(28,78,216,0.13)", // blue-tinted frosted glass
+								backdropFilter: "blur(12px)",
+								WebkitBackdropFilter: "blur(12px)",
+								border: "1.5px solid rgba(28,78,216,0.18)", // blue glass-like border
+								boxShadow: "0 8px 32px 0 rgba(28,78,216,0.18)",
 								color: "#fff",
 								overflow: "hidden",
 								transition: "background 0.3s",
@@ -437,11 +466,11 @@ export default function QuizComponent({ quiz }: { quiz: Quiz }) {
 							sx={{
 								p: { xs: 2, md: 3 },
 								borderRadius: "22px",
-								bgcolor: "rgba(10, 18, 38, 0.72)",
-								backdropFilter: "blur(32px) saturate(180%)",
-								WebkitBackdropFilter: "blur(32px) saturate(180%)",
-								border: "1.5px solid rgba(255,255,255,0.13)",
-								boxShadow: "0 12px 48px 0 rgba(28,78,216,0.18)",
+								bgcolor: "rgba(28,78,216,0.13)", // blue-tinted frosted glass
+								backdropFilter: "blur(12px)",
+								WebkitBackdropFilter: "blur(12px)",
+								border: "1.5px solid rgba(28,78,216,0.18)", // blue glass-like border
+								boxShadow: "0 8px 32px 0 rgba(28,78,216,0.18)",
 								color: "#fff",
 								overflow: "hidden",
 								transition: "background 0.3s",

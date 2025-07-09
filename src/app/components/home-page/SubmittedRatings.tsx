@@ -5,23 +5,22 @@ import { Box, Typography, Container, Card, CardContent, Stack } from '@mui/mater
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-const hardcodedRatings = [
-  {
-    pills: 5,
-    date: '3/4/2025, 2:09:10 AM',
-    comment: 'woah the website looks so good whoever coded it is a genius',
-  },
-  {
-    pills: 3,
-    date: '3/4/2025, 7:15:33 PM',
-    comment: 'insanely helpful!',
-  },
-  {
-    pills: 5,
-    date: '3/3/2025, 7:26:18 PM',
-    comment: 'best app ever!!',
-  },
-];
+type Rating = {
+  pills: number;
+  comment?: string;
+  name?: string;
+  image?: string;
+  date?: string;
+  userId: string;
+  [key: string]: any;
+};
+
+// Optionally provide hardcoded ratings (empty by default, can be filled for fallback/demo)
+const hardcodedRatings: Rating[] = [];
+
+interface SubmittedRatingsProps {
+  showHardcoded?: boolean;
+}
 
 const settings = {
   dots: false,
@@ -42,9 +41,9 @@ const settings = {
   ],
 };
 
-export default function SubmittedRatings() {
+export default function SubmittedRatings({ showHardcoded = false }: SubmittedRatingsProps) {
   const { data: session } = useSession();
-  const [ratings, setRatings] = useState(hardcodedRatings);
+  const [ratings, setRatings] = useState<Rating[]>(hardcodedRatings); // Use hardcodedRatings as initial value
 
   useEffect(() => {
     (async () => {
@@ -52,11 +51,17 @@ export default function SubmittedRatings() {
         const res = await fetch('/api/reviews');
         if (res.ok) {
           const dbRatings = await res.json();
-          setRatings([...dbRatings, ...hardcodedRatings]);
+          if (showHardcoded && hardcodedRatings.length > 0) {
+            setRatings([...dbRatings, ...hardcodedRatings]);
+          } else {
+            setRatings(dbRatings.length ? dbRatings : hardcodedRatings); // Use API ratings if available, else fallback
+          }
         }
-      } catch {}
+      } catch {
+        setRatings(hardcodedRatings); // Fallback on error
+      }
     })();
-  }, [session]); // Add session as dependency to update after login/submit
+  }, [session, showHardcoded]); // Add session as dependency to update after login/submit
 
   // Check if user has already submitted a review (ignore hardcoded ratings)
   const userId = session?.user?.id;

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import QuizResultsPage from "../components/QuizResultsPage";
+import QuizResultsPage from "../components/quiz-results-page/QuizResultsPage";
 import { Box, CircularProgress } from "@mui/material";
 
 export default function QuizResultsPageWrapper() {

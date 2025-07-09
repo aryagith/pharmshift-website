@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Box, IconButton, Button, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Button, useMediaQuery, Paper } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CalculatorComponent from './CalculatorComponent';
@@ -64,16 +64,19 @@ export default function CalculatorDrawer() {
     <Box
       sx={{
         position: 'fixed',
-        top: { xs: 80, sm: 64 }, // Increased top offset for better visibility below navbar
+        top: { xs: 80, sm: 64 },
         right: 0,
         zIndex: fabZIndex,
         width: { xs: '100%', sm: DRAWER_WIDTH },
         maxWidth: '100vw',
         transition: 'all 0.3s cubic-bezier(.4,2,.5,1)',
-        boxShadow: '-12px 0 40px 0 rgba(28,78,216,0.18)',
-        bgcolor: 'rgba(10, 18, 38, 0.96)',
+        boxShadow: '-12px 0 40px 0 rgba(0,0,0,0.25)',
+        bgcolor: 'rgba(10,10,10,0.85)', // jet black frosted glass
         borderTopLeftRadius: 32,
         borderBottomLeftRadius: 32,
+        border: '1.5px solid rgba(255,255,255,0.18)', // glass-like border
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

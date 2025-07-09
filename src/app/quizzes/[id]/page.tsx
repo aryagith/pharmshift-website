@@ -1,13 +1,13 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import QuizComponent from "../../components/quizpage/QuizComponent";
+import QuizComponent from "../../components/quiz-page/QuizComponent";
 import { Box, CircularProgress } from "@mui/material";
-import CalculatorDrawer from "../../components/quizpage/CalculatorDrawer";
+import CalculatorDrawer from "../../components/quiz-page/CalculatorDrawer";
 
-// 'params' is now a promise, so unwrap it
+
 export default function QuizPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params); // Unwrap!
+  const { id } = use(params); 
 
   const [quiz, setQuiz] = useState<any>(null);
   const [loading, setLoading] = useState(true);

@@ -58,11 +58,11 @@ export default function CalculatorComponent() {
         sx={{
           p: { xs: 2.5, md: 5 },
           borderRadius: "22px",
-          bgcolor: "rgba(10, 18, 38, 0.72)",
-          backdropFilter: "blur(32px) saturate(180%)",
-          WebkitBackdropFilter: "blur(32px) saturate(180%)",
-          border: "1.5px solid rgba(255,255,255,0.13)",
-          boxShadow: "0 12px 48px 0 rgba(28,78,216,0.18)",
+          bgcolor: "rgba(28,78,216,0.13)", // blue-tinted frosted glass
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1.5px solid rgba(28,78,216,0.18)", // blue glass-like border
+          boxShadow: "0 8px 32px 0 rgba(28,78,216,0.18)",
           color: "#fff",
           overflow: "hidden",
           transition: "background 0.3s",
