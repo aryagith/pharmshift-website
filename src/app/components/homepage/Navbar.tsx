@@ -34,6 +34,8 @@ export default function Navbar() {
   const handleClick = (item: string) => {
     if (item === 'Quizzes') router.push('/quizselection');
     if (item === 'Home') router.push('/');
+    //I have added this line
+    if (item === 'Study-Partner') router.push('/study-partner');
   };
 
   return (
@@ -69,7 +71,6 @@ export default function Navbar() {
               </Typography>
             </Button>
 
-            {/* MOBILE MENU BUTTON */}
             {isMobile ? (
               <Box sx={{ marginLeft: 'auto' }}>
                 <IconButton
@@ -121,11 +122,11 @@ export default function Navbar() {
                       open={Boolean(resourcesAnchor)}
                       onClose={() => setResourcesAnchor(null)}
                     >
-                       {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
+                       {['Quizzes', 'Chatbot', 'OSCE Studybot Review', 'Study-Partner'].map((item) => (
                   <MenuItem key={item} onClick={() => { handleClick(item) }}>
                     <Box>
                       <Typography sx={{ color: 'white', fontSize: '1rem', fontWeight: 400 }}>{item}</Typography>
-                      {(item === 'Chatbot' || item === 'OSCE Studybot Review') && (
+                      {(item === 'Chatbot' || item === 'OSCE Studybot Review' || item === 'Study-Partner') && (
                         <Typography
                           variant="caption"
                           sx={{
@@ -145,7 +146,7 @@ export default function Navbar() {
                               '100%': { backgroundPosition: '0% 50%' },
                             },
                             backgroundSize: '200% 200%',
-                            opacity: 1, // Ensure full visibility
+                            opacity: 1, 
                             textShadow: '0 1px 8px rgba(106,90,249,0.25), 0 1px 8px rgba(0,198,251,0.15)',
                           }}
                         >
@@ -192,7 +193,7 @@ export default function Navbar() {
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                       >
-                        {/* User info at the top */}
+                       
                         <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
                           <Typography variant="subtitle1" fontWeight={600} sx={{ color: '#1C4ED8', fontSize: 16, lineHeight: 1.1, mb: 0 }}>
                             {session.user?.name || 'User'}
@@ -202,7 +203,7 @@ export default function Navbar() {
                           </Typography>
                         </Box>
                         <Box sx={{ borderBottom: '1px solid #e0e0e0', mx: 1, mb: 0.5 }} />
-                        {/* Profile and Sign Out options */}
+                      
                         <MenuItem onClick={() => { setAccountAnchor(null); router.push('/profile'); }} sx={{ display: 'block', alignItems: 'flex-start' }}>
                           <Box display="flex" alignItems="center">
                             <AccountCircle sx={{ mr: 1 }} />
