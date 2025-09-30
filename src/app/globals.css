@@ -38,18 +38,3 @@ body {
     transform: translateY(0);
   }
 }
-
-/*
-  REMOVE or COMMENT OUT this section.
-  The styles are now handled by your MUI theme in `lib/theme.ts`.
-  Keeping this can lead to specificity issues or !important wars.
-*/
-/*
-.MuiPopover-root .MuiMenu-paper {
-  background-color: #0a0a0a !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65) !important;
-  color: #fff !important;
-}
-*/

@@ -34,6 +34,7 @@ export default function Navbar() {
   const handleClick = (item: string) => {
     if (item === 'Quizzes') router.push('/quizselection');
     if (item === 'Home') router.push('/');
+    if (item === 'Practice Cases') router.push('/caseselection');
   };
 
   return (
@@ -121,7 +122,7 @@ export default function Navbar() {
                       open={Boolean(resourcesAnchor)}
                       onClose={() => setResourcesAnchor(null)}
                     >
-                       {['Quizzes', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
+                       {['Quizzes','Practice Cases', 'Chatbot', 'OSCE Studybot Review'].map((item) => (
                   <MenuItem key={item} onClick={() => { handleClick(item) }}>
                     <Box>
                       <Typography sx={{ color: 'white', fontSize: '1rem', fontWeight: 400 }}>{item}</Typography>

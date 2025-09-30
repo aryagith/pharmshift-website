@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Box,
   TextField,
@@ -8,6 +8,9 @@ import {
   Stack,
 } from '@mui/material';
 import { Mic, Person, SmartToy } from '@mui/icons-material';
+import { useVoiceChat } from '../../../hooks/useVoiceChat';
+import { resampleAudio } from '../../../lib/resampleAudio';
+
 
 interface ChatbotComponentProps {
   width?: number | string;
@@ -47,6 +50,8 @@ export default function ChatbotComponent({ width = 500, height = 500, chat, onSe
   );
   const [selectedChatId, setSelectedChatId] = useState<string>('1');
   const [input, setInput] = useState('');
+  const { isRecording, status, toggleRecording } = useVoiceChat('ws://localhost:8000/ws/audio');
+
 
   // Find the selected chat
   const selectedChat = chat || chatHistory.find(chat => chat.id === selectedChatId);
@@ -191,21 +196,18 @@ export default function ChatbotComponent({ width = 500, height = 500, chat, onSe
           Send
         </Button>
         <Button
+          onClick={toggleRecording}
           variant="contained"
           sx={{
             minWidth: 44,
             minHeight: 44,
             borderRadius: '50%',
-            px: 0,
-            py: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            ml: 0.5,
+            backgroundColor: isRecording ? '#D81C1C' : undefined,
           }}
         >
           <Mic />
         </Button>
+
       </Stack>
     </Paper>
   );

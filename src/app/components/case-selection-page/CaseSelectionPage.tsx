@@ -18,60 +18,50 @@ import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const quizzes = [
+const cases = [
     {
-        name: 'Quiz 1',
-        route: '/quizzes/cmb6w1ela0000d7yocnnjdhgs',
-        icon: <PsychologyAltOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
+        name: 'Case 1: John Smith ',
+        route: '/s2s',
+        icon: <MedicalServicesOutlinedIcon sx={{ fontSize: 30, mb: 2, color: 'primary.main' }} />,
+        description: 'Practice counseling a patient on their diabetes medications and lifestyle.',
     },
-    {
-        name: 'Quiz 2',
-        route: '/quizzes/cmb6w1fi9002kd7yoo64hddxs',
-        icon: <MedicalServicesOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
-    },
-    {
-        name: 'Quiz 3',
-        route: '/quizzes/cmb6w1gkn0061d7yorzabgtj9',
-        icon: <ScienceOutlinedIcon sx={{ fontSize: 70, mb: 2, color: 'primary.main' }} />,
-    },
+    
 ];
 
-const QuizSelectionPage = () => {
+const CaseSelectionPage = () => {
     const [open, setOpen] = useState(false);
-    const [selectedQuizIndex, setSelectedQuizIndex] = useState<number | null>(null);
+    const [selectedCaseIndex, setSelectedCaseIndex] = useState<number | null>(null);
     const router = useRouter();
 
     const handleCardClick = (index: number) => {
-        setSelectedQuizIndex(index);
+        setSelectedCaseIndex(index);
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
-        setSelectedQuizIndex(null);
+        setSelectedCaseIndex(null);
     };
 
     const handleStart = () => {
-        if (selectedQuizIndex !== null) {
-            router.push(quizzes[selectedQuizIndex].route);
+        if (selectedCaseIndex !== null) {
+            router.push(cases[selectedCaseIndex].route);
         }
         handleClose();
     };
 
-
     return (
         <Box sx={{ textAlign: 'center', py: 6 }}>
             <Typography variant="h4" fontWeight={500} fontSize={'3.5rem'} gutterBottom>
-                Quizzes
+                Practice Cases
             </Typography>
             <Typography variant="subtitle1" fontWeight={400} fontSize={'1.25rem'} mb={4}
                 sx={{ textAlign: 'center', maxWidth: 700, mx: 'auto', background: 'linear-gradient(90deg, #2563eb 0%, #60a5fa 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 500 }}>
-                Select a quiz below to test your clinical knowledge and decision-making skills. Each quiz is designed to challenge you with real-world scenarios and help you learn through practice.
+                Select a case below to practice patient conversations and clinical scenarios as a pharmacist. Each case simulates a real-world interaction to help you build confidence and communication skills.
             </Typography>
-
             <Grid container spacing={4} justifyContent="center" mt={4}>
-                {quizzes.map((quiz, index) => (
-                    <Grid key={quiz.name} >
+                {cases.map((c, index) => (
+                    <Grid key={c.name}>
                         <Card
                             sx={{
                                 width: 200,
@@ -104,7 +94,7 @@ const QuizSelectionPage = () => {
                                 }}
                             >
                                 <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-                                    {React.cloneElement(quiz.icon, {
+                                    {React.cloneElement(c.icon, {
                                         sx: { fontSize: 100, color: 'primary.main' },
                                     })}
                                 </Box>
@@ -114,14 +104,13 @@ const QuizSelectionPage = () => {
                                     fontSize="1.5rem"
                                     sx={{ pb: 0 }}
                                 >
-                                    {quiz.name}
+                                    {c.name}
                                 </Typography>
                             </CardActionArea>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
-
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -137,8 +126,8 @@ const QuizSelectionPage = () => {
                     }}
                 >
                     <Box sx={{ mb: 2 }}>
-                        {selectedQuizIndex !== null &&
-                            React.cloneElement(quizzes[selectedQuizIndex].icon, {
+                        {selectedCaseIndex !== null &&
+                            React.cloneElement(cases[selectedCaseIndex].icon, {
                                 sx: { fontSize: 70, color: '#1C3EB5' },
                             })}
                     </Box>
@@ -155,7 +144,7 @@ const QuizSelectionPage = () => {
                     >
                         Ready to start{' '}
                         <span style={{ color: '#1C3EB5', marginRight: 4 }}>
-                            {selectedQuizIndex !== null ? quizzes[selectedQuizIndex].name : ''}
+                            {selectedCaseIndex !== null ? cases[selectedCaseIndex].name : ''}
                         </span>
                         <span style={{ marginLeft: 1 }}>?</span>
                     </DialogTitle>
@@ -226,4 +215,4 @@ const QuizSelectionPage = () => {
     );
 };
 
-export default QuizSelectionPage;
+export default CaseSelectionPage;
