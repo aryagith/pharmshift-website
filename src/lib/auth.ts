@@ -23,18 +23,21 @@ declare module "next-auth/jwt" {
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  // debug: true,
-  // events: {
-  // async createUser({ user }) {
-  //   console.log("🆕 User created:", user);
-  // },
-  // async linkAccount({ user, account }) {
-  //   console.log("🔗 Account linked:", account);
-  // },
-  // async signIn(data) {
-  //   console.log("🔐 Sign-in event:", data);
-  // },
-  //  },  
+
+  debug: process.env.NODE_ENV === "development",
+
+  events: {
+    async signIn(message) {
+      console.log("Sign-in event:", message);
+    },
+    async signOut(message) {
+      console.log("Sign-out event:", message);
+    },
+    async session(message) {
+      console.log("Session event:", message);
+    },
+  },
+
   session: {
     strategy: "jwt",
   },
@@ -97,6 +100,18 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        domain: process.env.NODE_ENV === 'production' ? '.pharmshift.com' : 'localhost',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -115,6 +130,12 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.image as string | undefined; 
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Handle redirects between www and non-www
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (new URL(url).hostname.endsWith('.pharmshift.com')) return url;
+      return baseUrl;
     },
   },
 };
