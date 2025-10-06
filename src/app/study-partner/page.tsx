@@ -10,7 +10,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
@@ -57,12 +57,12 @@ export default function StudyPartnerPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       if (status === "loading" || !session?.user?.email) return;
-      
+
       try {
         const res = await axios.get<StudyProfile>(
           `/api/pro-file/get?email=${encodeURIComponent(session.user.email)}`
         );
-        
+
         if (res.data) {
           const data = res.data;
           setStudyProfile(data);
@@ -87,7 +87,7 @@ export default function StudyPartnerPage() {
 
   const handleSave = async () => {
     if (!session?.user?.email) return;
-    
+
     const payload = {
       email: session.user.email,
       goal,
@@ -96,13 +96,13 @@ export default function StudyPartnerPage() {
       phoneNumber,
       profileImage: profileImage || "",
     };
-    
+
     try {
       const res = await axios.post<StudyProfile>(
         "/api/pro-file/update",
         payload
       );
-      
+
       if (res.data) {
         setStudyProfile(res.data);
         setEditMode(false);
@@ -193,14 +193,18 @@ export default function StudyPartnerPage() {
 
             <div className="text-white px-4 py-2 mt-2 text-4xl">
               {(() => {
-                const fullName = matchProfile?.name || session?.user?.name || "No name available";
+                const fullName =
+                  matchProfile?.name ||
+                  session?.user?.name ||
+                  "No name available";
                 if (fullName === "No name available") return fullName;
 
                 const nameParts = fullName.trim().split(" ");
                 if (nameParts.length === 1) return nameParts[0];
 
                 const firstName = nameParts[0];
-                const lastNameInitial = nameParts[nameParts.length - 1]?.[0] || "";
+                const lastNameInitial =
+                  nameParts[nameParts.length - 1]?.[0] || "";
                 return `${firstName} ${lastNameInitial}.`;
               })()}
             </div>
@@ -210,9 +214,7 @@ export default function StudyPartnerPage() {
           For the rating stuff, we want to use some pills instead of stars so use the pill png file and edit it on figma to make it straight
           */}
           <div className="flex items-center justify-center mb-4">
-            <h4 className="text-blue-700">
-              Rating
-            </h4>
+            <h4 className="text-blue-700">Rating</h4>
           </div>
 
           {/* Goal messages */}
@@ -257,7 +259,11 @@ export default function StudyPartnerPage() {
                       variant="contained"
                       color="primary"
                       onClick={() =>
-                        window.open(`https://wa.me/${encodeURIComponent(matchProfile.phoneNumber)}`)
+                        window.open(
+                          `https://wa.me/${encodeURIComponent(
+                            matchProfile.phoneNumber
+                          )}`
+                        )
                       }
                     >
                       Start Chat
