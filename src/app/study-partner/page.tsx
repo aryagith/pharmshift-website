@@ -37,7 +37,7 @@ type MatchProfile = {
 };
 
 export default function StudyPartnerPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [studyProfile, setStudyProfile] = useState<StudyProfile | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [goal, setGoal] = useState("");
@@ -56,44 +56,60 @@ export default function StudyPartnerPage() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!session?.user?.email) return;
+      if (status === "loading" || !session?.user?.email) return;
+      
       try {
         const res = await axios.get<StudyProfile>(
-          `/api/pro-file/get?email=${session.user.email}`
+          `/api/pro-file/get?email=${encodeURIComponent(session.user.email)}`
         );
-        const data = res.data;
-        setStudyProfile(data);
-        setGoal(data.goal || "");
-        setTopics(data.studyTopics || "");
-        setHoursAvailable(data.hoursAvailable || 0);
-        setPhoneNumber(data.phoneNumber || "");
-        setProfileImage(data.profileImage || null);
+        
+        if (res.data) {
+          const data = res.data;
+          setStudyProfile(data);
+          setGoal(data.goal || "");
+          setTopics(data.studyTopics || "");
+          setHoursAvailable(data.hoursAvailable || 0);
+          setPhoneNumber(data.phoneNumber || "");
+          setProfileImage(data.profileImage || null);
+        }
       } catch (err) {
         console.error("❌ Failed to fetch profile:", err);
+        // Set default values on error
+        setGoal("");
+        setTopics("");
+        setHoursAvailable(0);
+        setPhoneNumber("");
+        setProfileImage(null);
       }
     };
     fetchProfile();
-  }, [session?.user?.email]);
+  }, [session?.user?.email, status]);
 
   const handleSave = async () => {
     if (!session?.user?.email) return;
+    
     const payload = {
       email: session.user.email,
       goal,
       studyTopics: topics,
       hoursAvailable,
       phoneNumber,
-      profileImage,
+      profileImage: profileImage || "",
     };
+    
     try {
       const res = await axios.post<StudyProfile>(
         "/api/pro-file/update",
         payload
       );
-      setStudyProfile(res.data);
-      setEditMode(false);
+      
+      if (res.data) {
+        setStudyProfile(res.data);
+        setEditMode(false);
+      }
     } catch (err) {
       console.error("Failed to save study profile:", err);
+      alert("Failed to save profile. Please try again.");
     }
   };
 
@@ -114,22 +130,35 @@ export default function StudyPartnerPage() {
   //   }
   // };
   const handleFindMatch = async () => {
-    setLoading(true); // Start the spinner ✨
+    setLoading(true);
     try {
       const res = await axios.get<MatchProfile>("/api/pro-file/random");
-      setMatchProfile(res.data);
+      if (res.data) {
+        setMatchProfile(res.data);
+      }
     } catch (err) {
       console.error("Failed to find match:", err);
+      alert("Failed to find a study partner. Please try again.");
     } finally {
-      setLoading(false); // End the spinner 💫
+      setLoading(false);
     }
   };
 
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-black/80">
+        <p className="text-white text-center">Loading...</p>
+      </div>
+    );
+  }
+
   if (!session?.user?.email) {
     return (
-      <p className="text-white text-center mt-10">
-        Please wait your magic profile is being cooked...
-      </p>
+      <div className="flex justify-center items-center min-h-screen bg-black/80">
+        <p className="text-white text-center">
+          Please wait your magic profile is being cooked...
+        </p>
+      </div>
     );
   }
 
@@ -162,19 +191,17 @@ export default function StudyPartnerPage() {
               />
             </div>
 
-            {/* Display user's first name and last name first letter*/}
-            <div className=" text-white px-4 py-2 mt-2 text-4xl">
+            <div className="text-white px-4 py-2 mt-2 text-4xl">
               {(() => {
                 const fullName = matchProfile?.name || session?.user?.name || "No name available";
                 if (fullName === "No name available") return fullName;
 
                 const nameParts = fullName.trim().split(" ");
-                if (nameParts.length === 1) return nameParts[0]; // this should only print first name
+                if (nameParts.length === 1) return nameParts[0];
 
                 const firstName = nameParts[0];
-                const lastNameInitial = nameParts[nameParts.length - 1][0]; // get the first letter of last name
+                const lastNameInitial = nameParts[nameParts.length - 1]?.[0] || "";
                 return `${firstName} ${lastNameInitial}.`;
-
               })()}
             </div>
           </div>
@@ -230,7 +257,7 @@ export default function StudyPartnerPage() {
                       variant="contained"
                       color="primary"
                       onClick={() =>
-                        window.open(`https://wa.me/${matchProfile.phoneNumber}`)
+                        window.open(`https://wa.me/${encodeURIComponent(matchProfile.phoneNumber)}`)
                       }
                     >
                       Start Chat
