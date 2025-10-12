@@ -16,11 +16,28 @@ model User {
   image          String?
   hashedPassword String?
 
+   // Relationships
+  studyProfile   StudyProfile? 
+
   quizAttempts QuizAttempt[] 
   accounts Account[]
   sessions Session[]
   reviews  Review[] 
 }
+
+model StudyProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  goal           String?
+  studyTopics    String?
+  hoursAvailable Int?
+  phoneNumber    String?
+  profileImage   String?  @db.LongText             
+
+  
+  user   User @relation(fields: [userId], references: [id])
+}
+
 
 model Question {
   id      String   @id @default(cuid())

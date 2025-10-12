@@ -41,6 +41,9 @@ cloudrun.env
 *.tsbuildinfo
 next-env.d.ts
 
+# prisma generated files
+/src/generated/
+
 quiz-data.js
 prisma/migrations
 src/app/api/quiz-attempts/user/route.ts
