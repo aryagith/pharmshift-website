@@ -17,6 +17,7 @@ import MedicalServicesOutlinedIcon from '@mui/icons-material/MedicalServicesOutl
 import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import ProtectedByLogin from '../utils/ProtectedByLogin';
 
 const cases = [
     {
@@ -51,6 +52,7 @@ const CaseSelectionPage = () => {
     };
 
     return (
+        <ProtectedByLogin>
         <Box sx={{ textAlign: 'center', py: 6 }}>
             <Typography variant="h4" fontWeight={500} fontSize={'3.5rem'} gutterBottom>
                 Practice Cases
@@ -212,6 +214,7 @@ const CaseSelectionPage = () => {
                 }
             `}</style>
         </Box>
+    </ProtectedByLogin>
     );
 };
 
