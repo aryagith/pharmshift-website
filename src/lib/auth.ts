@@ -28,13 +28,13 @@ export const authOptions: NextAuthOptions = {
 
   events: {
     async signIn(message) {
-      console.log("Sign-in event:", message);
+      console.log("🔐 Sign-in event:", message);
     },
     async signOut(message) {
-      console.log("Sign-out event:", message);
+      console.log("🚪 Sign-out event:", message);
     },
     async session(message) {
-      console.log("Session event:", message);
+      console.log("📋 Session event:", message);
     },
   },
 
@@ -46,6 +46,14 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
+          prompt: "select_account", // Force account selection
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -137,7 +145,49 @@ export const authOptions: NextAuthOptions = {
       if (new URL(url).hostname.endsWith('.pharmshift.com')) return url;
       return baseUrl;
     },
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log('Sign-in attempt:', { 
+        provider: account?.provider, 
+        user: user?.email,
+        accountType: account?.type 
+      });
+
+      // Auto-link accounts with same email
+      if (account?.provider === "google" && user?.email) {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email },
+          include: { accounts: true }
+        });
+
+        if (existingUser) {
+          // Check if Google account already linked
+          const googleAccount = existingUser.accounts.find(acc => acc.provider === "google");
+          
+          if (!googleAccount && account.providerAccountId) {
+            // Link Google account to existing user
+            await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                access_token: account.access_token,
+                refresh_token: account.refresh_token,
+                expires_at: account.expires_at,
+                token_type: account.token_type,
+                scope: account.scope,
+                id_token: account.id_token,
+              },
+            });
+            console.log(`✅ Linked Google account to existing user: ${user.email}`);
+          }
+        }
+      }
+
+      return true;
+    },
   },
 };
+//
 
 export const getAuthSession = () => getServerSession(authOptions);

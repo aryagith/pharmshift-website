@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
     const response = NextResponse.redirect(url, 301)
 
     // Preserve auth cookies during redirect
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET })
     if(token) {
       // Copy session cookies to new domain if some exist
       req.cookies.getAll().forEach(cookie => {
