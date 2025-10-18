@@ -214,12 +214,26 @@ export default function StudyPartnerPage() {
           For the rating stuff, we want to use some pills instead of stars so use the pill png file and edit it on figma to make it straight
           */}
           <div className="flex items-center justify-center mb-4">
-            <h4 className="text-blue-700">Rating</h4>
+            <h4 className="text-blue-700 mr-3 font-bold text-2xl">Rating</h4>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((pill) => (
+                <Image
+                  key={pill}
+                  src="/horizontalpill.png"
+                  alt="Pill"
+                  width={30}
+                  height={30}
+                  className={`${
+                    pill <= 2 ? "opacity-100" : "opacity-30"
+                  } transition-opacity`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Goal messages */}
           <div className="flex items-center justify-center mb-4">
-            <h4 className="text-white text-center">
+            <h4 className="text-white text-center text-lg">
               Goal: Ace OSCE by July,
               <br />
               Prefers flashcards + Group Chat
