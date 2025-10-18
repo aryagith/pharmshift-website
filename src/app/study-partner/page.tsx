@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import React from "react";
 import {
   TextField,
   Button,
@@ -12,12 +13,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-
-/**
- * Double check the API calls by checking the browser's Network tab
- * Check if API routes exist in the pro-file folder
- * The axios usage may be wrong because of the connection to the backend
- */
 
 type StudyProfile = {
   goal: string;
@@ -121,14 +116,6 @@ export default function StudyPartnerPage() {
     reader.readAsDataURL(file);
   };
 
-  // const handleFindMatch = async () => {
-  //   try {
-  //     const res = await axios.get<MatchProfile>('/api/pro-file/random');
-  //     setMatchProfile(res.data);
-  //   } catch (err) {
-  //     console.error('Failed to find match:', err);
-  //   }
-  // };
   const handleFindMatch = async () => {
     setLoading(true);
     try {
@@ -166,7 +153,7 @@ export default function StudyPartnerPage() {
     <div className="flex justify-center p-6 bg-black/80 min-h-screen backdrop-blur-md">
       <Card className="w-full max-w-xl shadow-xl bg-black/60 backdrop-blur-sm border border-gray-800 text-white rounded-xl">
         <CardContent className="flex flex-col p-4 gap-4">
-          <div className="flex flex-col items-center mb-20 mt-20">
+          <div className="flex flex-col items-center mb-6 mt-20">
             <div
               onClick={() => fileInputRef.current?.click()}
               className="w-32 h-32 rounded-full overflow-hidden cursor-pointer border bg-gray-700 flex items-center justify-center"
@@ -191,7 +178,7 @@ export default function StudyPartnerPage() {
               />
             </div>
 
-            <div className="text-white px-4 py-2 mt-2 text-4xl">
+            <div className="text-white px-4 py-2 mt-2 text-4xl font-bold">
               {(() => {
                 const fullName =
                   matchProfile?.name ||
@@ -322,7 +309,7 @@ export default function StudyPartnerPage() {
             )}
           </AnimatePresence>
 
-          {/* My  Info */}
+          {/* My Info */}
           {!matchProfile && (
             <>
               <div className="flex justify-center mb-6">
@@ -341,42 +328,147 @@ export default function StudyPartnerPage() {
                 </Button>
               </div>
 
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-1 text-white">
-                  <span>Hours available to study</span>
+              {/* Enhanced Progress Cards */}
+              <div className="space-y-6 mb-6">
+                {/* Hours Available Card */}
+                <div className="bg-gradient-to-r from-blue-900/30 to-blue-800/20 rounded-xl p-5 border border-blue-700/30 backdrop-blur-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-5 h-5 text-blue-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-medium">
+                          Study Hours Available
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-white">
+                        {hoursAvailable}
+                      </span>
+                      <span className="text-blue-300 text-md">
+                        /{maxHours}h
+                      </span>
+                    </div>
+                  </div>
 
-                  <span>
-                    {hoursAvailable} / {maxHours}
-                  </span>
+                  <div className="relative">
+                    <div className="w-full bg-gray-800/50 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-blue-500 to-blue-400 h-full rounded-full transition-all duration-500 ease-out relative"
+                        style={{
+                          width: `${(hoursAvailable / maxHours) * 100}%`,
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-blue-300 mt-2">
+                      <span>0h</span>
+                      <span className="font-medium">
+                        {Math.round((hoursAvailable / maxHours) * 100)}%
+                        utilized
+                      </span>
+                      <span>{maxHours}h</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <div
-                    className="bg-blue-500 h-2.5 rounded-full"
-                    style={{
-                      width: `${(hoursAvailable / maxHours) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
 
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-1 text-white">
-                  <span>AI chats used</span>
-                  <span>
-                    {aiChatsUsed} / {aiChatsMax}
-                  </span>
-                </div>
-                <div className="w-full bg-[#1f2937] rounded-full h-2.5">
-                  <div
-                    className="bg-blue-500 h-2.5 rounded-full transition-all duration-300"
-                    style={{ width: `${(aiChatsUsed / aiChatsMax) * 100}%` }}
-                  />
+                {/* AI Chats Card */}
+                <div className="bg-gradient-to-r from-purple-900/30 to-purple-800/20 rounded-xl p-5 border border-purple-700/30 backdrop-blur-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-600/20 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-5 h-5 text-purple-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-medium">
+                          AI Chat Sessions
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-white">
+                        {aiChatsUsed}
+                      </span>
+                      <span className="text-purple-300 text-md">
+                        /{aiChatsMax}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <div className="w-full bg-gray-800/50 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-purple-500 to-purple-400 h-full rounded-full transition-all duration-500 ease-out relative"
+                        style={{
+                          width: `${(aiChatsUsed / aiChatsMax) * 100}%`,
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-purple-300 mt-2">
+                      <span>0</span>
+                      <span className="font-medium">
+                        {Math.round((aiChatsUsed / aiChatsMax) * 100)}% used
+                      </span>
+                      <span>{aiChatsMax}</span>
+                    </div>
+                  </div>
+
+                  {/* Usage Status Badge */}
+                  <div className="mt-3 flex items-center justify-between">
+                    <div
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        aiChatsUsed / aiChatsMax > 0.8
+                          ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                          : aiChatsUsed / aiChatsMax > 0.6
+                          ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                          : "bg-green-500/20 text-green-300 border border-green-500/30"
+                      }`}
+                    >
+                      {aiChatsUsed / aiChatsMax > 0.8
+                        ? "High Usage"
+                        : aiChatsUsed / aiChatsMax > 0.6
+                        ? "Moderate Usage"
+                        : "Low Usage"}
+                    </div>
+                    <span className="text-sm text-gray-400">
+                      {aiChatsMax - aiChatsUsed} remaining
+                    </span>
+                  </div>
                 </div>
               </div>
 
               {/* Editing mode */}
               {editMode && (
-                <>
+                <div className="bg-gray-900/50 rounded-xl p-5 border border-gray-700 space-y-4">
                   <TextField
                     label="Hours Available"
                     type="number"
@@ -390,6 +482,12 @@ export default function StudyPartnerPage() {
                     }}
                     fullWidth
                     margin="normal"
+                    InputProps={{
+                      style: { color: "white" },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "#9CA3AF" },
+                    }}
                   />
 
                   <TextField
@@ -398,6 +496,12 @@ export default function StudyPartnerPage() {
                     onChange={(e) => setTopics(e.target.value)}
                     fullWidth
                     margin="normal"
+                    InputProps={{
+                      style: { color: "white" },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "#9CA3AF" },
+                    }}
                   />
 
                   <TextField
@@ -406,6 +510,12 @@ export default function StudyPartnerPage() {
                     onChange={(e) => setGoal(e.target.value)}
                     fullWidth
                     margin="normal"
+                    InputProps={{
+                      style: { color: "white" },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "#9CA3AF" },
+                    }}
                   />
 
                   <TextField
@@ -415,8 +525,14 @@ export default function StudyPartnerPage() {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     fullWidth
                     margin="normal"
+                    InputProps={{
+                      style: { color: "white" },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "#9CA3AF" },
+                    }}
                   />
-                </>
+                </div>
               )}
 
               <div className="mt-auto divide-y divide-gray-700">
