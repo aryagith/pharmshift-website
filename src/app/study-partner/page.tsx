@@ -44,8 +44,8 @@ export default function StudyPartnerPage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [matchProfile, setMatchProfile] = useState<MatchProfile | null>(null);
   const [loading, setLoading] = useState(false);
+  const [aiChatsUsed, setAiChatsUsed] = useState(127);
 
-  const aiChatsUsed = 127;
   const aiChatsMax = 200;
 
   const maxHours = 50;
@@ -66,16 +66,19 @@ export default function StudyPartnerPage() {
           setTopics(data.studyTopics || "");
           setHoursAvailable(data.hoursAvailable || 0);
           setPhoneNumber(data.phoneNumber || "");
-          setProfileImage(data.profileImage || null);
+          setProfileImage(data.profileImage || session?.user?.image || null);
+        } else {
+          // No profile data found, use session defaults
+          setProfileImage(session?.user?.image || null);
         }
       } catch (err) {
         console.error("❌ Failed to fetch profile:", err);
-        // Set default values on error
+        // Set default values on error, including session image as fallback
         setGoal("");
         setTopics("");
         setHoursAvailable(0);
         setPhoneNumber("");
-        setProfileImage(null);
+        setProfileImage(session?.user?.image || null);
       }
     };
     fetchProfile();
@@ -155,7 +158,7 @@ export default function StudyPartnerPage() {
       <Card className="w-full max-w-xl shadow-xl bg-black/60 backdrop-blur-sm border border-gray-800 text-white rounded-xl">
         <CardContent className="flex flex-col p-4 gap-4">
           <ProfileHeader
-            profileImage={profileImage}
+            profileImage={profileImage || session?.user?.image || null}
             matchProfileImage={matchProfile?.profileImage}
             userName={
               matchProfile?.name || session?.user?.name || "No name available"
@@ -206,6 +209,8 @@ export default function StudyPartnerPage() {
                   currentValue={hoursAvailable}
                   maxValue={maxHours}
                   unit="h"
+                  isEditable={true}
+                  onValueChange={setHoursAvailable}
                   icon={
                     <svg
                       className="w-5 h-5 text-blue-400"
@@ -228,6 +233,8 @@ export default function StudyPartnerPage() {
                   subtitle="Monthly usage"
                   currentValue={aiChatsUsed}
                   maxValue={aiChatsMax}
+                  isEditable={true}
+                  onValueChange={setAiChatsUsed}
                   icon={
                     <svg
                       className="w-5 h-5 text-blue-400"
