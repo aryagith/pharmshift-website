@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Pill from '../utils/Pill';
 import { useVoiceChat } from '../../../hooks/useVoiceChat';
 
-const WS_URL = 'ws://localhost:8000/ws/audio';
+const WS_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'ws://localhost:8000/ws/audio'
+    : 'wss://pharmshift-s2s-401721326394.us-central1.run.app/ws/audio';
+
 
 const S2SPageComponent: React.FC = () => {
     const [volume, setVolume] = useState(0);

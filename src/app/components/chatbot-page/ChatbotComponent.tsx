@@ -50,7 +50,12 @@ export default function ChatbotComponent({ width = 500, height = 500, chat, onSe
   );
   const [selectedChatId, setSelectedChatId] = useState<string>('1');
   const [input, setInput] = useState('');
-  const { isRecording, status, toggleRecording } = useVoiceChat('ws://localhost:8000/ws/audio');
+  const { isRecording, status, toggleRecording } = useVoiceChat(
+  process.env.NODE_ENV === 'development'
+    ? 'ws://localhost:8000/ws/audio'
+    : 'wss://pharmshift-s2s-401721326394.us-central1.run.app/ws/audio'
+);
+
 
 
   // Find the selected chat
